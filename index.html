@@ -263,15 +263,47 @@
                 </div>
             </div>
 
-            <div class="input-row">
-                <div class="input-group">
-                    <label for="weight">Weight (lbs)</label>
-                    <input type="number" id="weight" placeholder="170" min="50" max="500">
+            <div class="input-group">
+                <label>Unit System</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="unit-imperial" name="unit" value="imperial" checked onchange="toggleUnits()">
+                        <label for="unit-imperial">Imperial (ft/lbs)</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="unit-metric" name="unit" value="metric" onchange="toggleUnits()">
+                        <label for="unit-metric">Metric (cm/kg)</label>
+                    </div>
                 </div>
+            </div>
 
+            <div id="imperial-inputs" class="input-row">
                 <div class="input-group">
-                    <label for="height">Height (inches)</label>
-                    <input type="number" id="height" placeholder="70" min="36" max="96">
+                    <label>Height</label>
+                    <div class="height-inputs">
+                        <input type="number" id="height-ft" placeholder="5" min="3" max="8" style="width: 45%; display: inline-block;">
+                        <span style="padding: 0 5px;">ft</span>
+                        <input type="number" id="height-in" placeholder="10" min="0" max="11" style="width: 45%; display: inline-block;">
+                        <span style="padding: 0 5px;">in</span>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="weight-lbs">Weight</label>
+                    <input type="number" id="weight-lbs" placeholder="170" min="50" max="500">
+                    <span class="unit-suffix">lbs</span>
+                </div>
+            </div>
+
+            <div id="metric-inputs" class="input-row" style="display: none;">
+                <div class="input-group">
+                    <label for="height-cm">Height</label>
+                    <input type="number" id="height-cm" placeholder="178" min="90" max="250">
+                    <span class="unit-suffix">cm</span>
+                </div>
+                <div class="input-group">
+                    <label for="weight-kg">Weight</label>
+                    <input type="number" id="weight-kg" placeholder="77" min="25" max="230" step="0.1">
+                    <span class="unit-suffix">kg</span>
                 </div>
             </div>
 
@@ -405,25 +437,194 @@
             <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a> | <a href="#">Contact</a></p>
             <p style="font-size: 0.9em; margin-top: 10px;">Disclaimer: Consult a healthcare provider before starting any diet or exercise program.</p>
         </div>
-    </footer>
-
     <script>
+        // Auto-detect unit system based on locale
+        function detectUnitSystem() {
+            const locale = navigator.language || navigator.userLanguage;
+            const usLocales = ['en-US', 'en-CA'];
+            const isUS = usLocales.some(l => locale.startsWith(l));
+            
+            if (localStorage.getItem('unitPreference')) {
+                return localStorage.getItem('unitPreference');
+            }
+            
+            return isUS ? 'imperial' : 'metric';
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const preferredUnit = detectUnitSystem();
+            if (preferredUnit === 'metric') {
+                document.getElementById('unit-metric').checked = true;
+                toggleUnits();
+            }
+        });
+        
+        // Toggle between imperial and metric
+        function toggleUnits() {
+            const unit = document.querySelector('input[name="unit"]:checked').value;
+            localStorage.setItem('unitPreference', unit);
+            
+            if (unit === 'imperial') {
+                document.getElementById('imperial-inputs').style.display = '';
+                document.getElementById('metric-inputs').style.display = 'none';
+            } else {
+                document.getElementById('imperial-inputs').style.display = 'none';
+                document.getElementById('metric-inputs').style.display = '';
+            }
+        }
+        
         function calculateCalories() {
             const gender = document.querySelector('input[name="gender"]:checked').value;
             const age = parseFloat(document.getElementById('age').value) || 0;
-            const weightLbs = parseFloat(document.getElementById('weight').value) || 0;
-            const heightIn = parseFloat(document.getElementById('height').value) || 0;
+            const unit = document.querySelector('input[name="unit"]:checked').value;
             const activity = parseFloat(document.getElementById('activity').value) || 1.2;
             const goal = document.getElementById('goal').value;
-
-            if (age < 15 || weightLbs < 50 || heightIn < 36) {
-                alert('Please enter valid age (15+), weight (50+ lbs), and height');
-                return;
+            
+            let weightKg, heightCm;
+            
+            if (unit === 'imperial') {
+                const weightLbs = parseFloat(document.getElementById('weight-lbs').value) || 0;
+                const heightFt = parseFloat(document.getElementById('height-ft').value) || 0;
+                const heightIn = parseFloat(document.getElementById('height-in').value) || 0;
+                
+                if (age < 15 || weightLbs < 50 || heightFt < 3) {
+                    alert('Please enter valid age (15+), weight (50+ lbs), and height');
+                    return;
+                }
+                
+                weightKg = weightLbs * 0.453592;
+                heightCm = ((heightFt * 12) + heightIn) * 2.54;
+            } else {
+                weightKg = parseFloat(document.getElementById('weight-kg').value) || 0;
+                heightCm = parseFloat(document.getElementById('height-cm').value) || 0;
+                
+                if (age < 15 || weightKg < 25 || heightCm < 90) {
+                    alert('Please enter valid age (15+), weight (25+ kg), and height');
+                    return;
+                }
             }
 
-            // Convert to metric
-            const weightKg = weightLbs * 0.453592;
-            const heightCm = heightIn * 2.54;
+            // Calculate BMR using Mifflin-St Jeor
+            let bmr;
+            if (gender === 'male') {
+                bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * age) + 5;
+            } else {
+                bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * age) - 161;
+            }
+
+            // Calculate TDEE
+            const tdee = bmr * activity;
+
+            // Calculate target based on goal
+            let targetCalories;
+            let timelineText;
+            if (goal === 'lose') {
+                targetCalories = tdee - 500;
+                timelineText = `At this rate, you'll lose approximately 1 lb per week. To lose 10 lbs, it will take about 10 weeks.`;
+            } else if (goal === 'gain') {
+                targetCalories = tdee + 500;
+                timelineText = `At this rate, you'll gain approximately 1 lb per week. Focus on resistance training to maximize muscle gain.`;
+            } else {
+                targetCalories = tdee;
+                timelineText = `This is your maintenance level. Eat at this level to maintain your current weight.`;
+            }
+
+            // Calculate BMI
+            const heightM = heightCm / 100;
+            const bmi = weightKg / (heightM * heightM);
+
+            // Calculate macros (30% protein, 35% carbs, 35% fat)
+            const proteinCal = targetCalories * 0.30;
+            const carbsCal = targetCalories * 0.35;
+            const fatCal = targetCalories * 0.35;
+
+            const proteinG = Math.round(proteinCal / 4);
+            const carbsG = Math.round(carbsCal / 4);
+            const fatG = Math.round(fatCal / 9);
+
+            // Display results
+            document.getElementById('target-calories').textContent = Math.round(targetCalories).toLocaleString();
+            document.getElementById('bmr').textContent = Math.round(bmr).toLocaleString();
+            document.getElementById('tdee').textContent = Math.round(tdee).toLocaleString();
+            document.getElementById('bmi').textContent = bmi.toFixed(1);
+            document.getElementById('protein').textContent = proteinG + 'g';
+            document.getElementById('carbs').textContent = carbsG + 'g';
+            document.getElementById('fat').textContent = fatG + 'g';
+            document.getElementById('timeline-text').textContent = timelineText;
+
+            document.getElementById('results').classList.add('show');
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    </script>
+</body>
+</html>
+    <script>
+        // Auto-detect unit system based on locale
+        function detectUnitSystem() {
+            const locale = navigator.language || navigator.userLanguage;
+            const usLocales = ['en-US', 'en-CA'];
+            const isUS = usLocales.some(l => locale.startsWith(l));
+            
+            if (localStorage.getItem('unitPreference')) {
+                return localStorage.getItem('unitPreference');
+            }
+            
+            return isUS ? 'imperial' : 'metric';
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const preferredUnit = detectUnitSystem();
+            if (preferredUnit === 'metric') {
+                document.getElementById('unit-metric').checked = true;
+                toggleUnits();
+            }
+        });
+        
+        // Toggle between imperial and metric
+        function toggleUnits() {
+            const unit = document.querySelector('input[name="unit"]:checked').value;
+            localStorage.setItem('unitPreference', unit);
+            
+            if (unit === 'imperial') {
+                document.getElementById('imperial-inputs').style.display = '';
+                document.getElementById('metric-inputs').style.display = 'none';
+            } else {
+                document.getElementById('imperial-inputs').style.display = 'none';
+                document.getElementById('metric-inputs').style.display = '';
+            }
+        }
+        
+        function calculateCalories() {
+            const gender = document.querySelector('input[name="gender"]:checked').value;
+            const age = parseFloat(document.getElementById('age').value) || 0;
+            const unit = document.querySelector('input[name="unit"]:checked').value;
+            const activity = parseFloat(document.getElementById('activity').value) || 1.2;
+            const goal = document.getElementById('goal').value;
+            
+            let weightKg, heightCm;
+            
+            if (unit === 'imperial') {
+                const weightLbs = parseFloat(document.getElementById('weight-lbs').value) || 0;
+                const heightFt = parseFloat(document.getElementById('height-ft').value) || 0;
+                const heightIn = parseFloat(document.getElementById('height-in').value) || 0;
+                
+                if (age < 15 || weightLbs < 50 || heightFt < 3) {
+                    alert('Please enter valid age (15+), weight (50+ lbs), and height');
+                    return;
+                }
+                
+                weightKg = weightLbs * 0.453592;
+                heightCm = ((heightFt * 12) + heightIn) * 2.54;
+            } else {
+                weightKg = parseFloat(document.getElementById('weight-kg').value) || 0;
+                heightCm = parseFloat(document.getElementById('height-cm').value) || 0;
+                
+                if (age < 15 || weightKg < 25 || heightCm < 90) {
+                    alert('Please enter valid age (15+), weight (25+ kg), and height');
+                    return;
+                }
+            }
 
             // Calculate BMR using Mifflin-St Jeor
             let bmr;
