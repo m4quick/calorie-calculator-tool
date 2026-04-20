@@ -5,7 +5,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Free calorie calculator. Calculate your daily calorie needs, BMR, and TDEE. Plan weight loss or muscle gain with personalized nutrition targets.">
     <meta name="keywords" content="calorie calculator, TDEE calculator, BMR calculator, daily calorie needs, weight loss calculator">
-    <title>Calorie Calculator - Daily Calorie Needs & BMR Calculator</title>
+    <title>Calorie Calculator - Daily Calorie Needs &amp; BMR Calculator</title>
+    <!-- Schema.org Calculator Markup -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Calorie Calculator",
+        "description": "Free calorie calculator. Calculate your daily calorie needs, BMR, and TDEE. Plan weight loss or muscle gain with personalized nutrition targets.",
+        "applicationCategory": "HealthApplication",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "featureList": "BMR Calculator, TDEE Calculator, Macro Calculator, Weight Loss Planner"
+    }
+    </script>
+    <!-- FAQ Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "What is TDEE?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "TDEE stands for Total Daily Energy Expenditure. It's the total number of calories your body burns in a day, including your basal metabolic rate (BMR) plus calories burned through activity and digestion."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How accurate is this calorie calculator?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "This calculator uses the Mifflin-St Jeor equation, which is considered the most accurate formula for estimating BMR and TDEE. However, individual results may vary by 5-10% due to genetic factors and metabolism variations."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Should I use metric or imperial units?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Both systems work identically - the calculator automatically converts between them. Use whichever you're most comfortable with. The calculator can auto-detect based on your browser settings."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How many calories should I eat to lose weight?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "To lose 1 pound per week, subtract 500 calories from your TDEE (maintenance calories). For 2 pounds per week, subtract 1000 calories. Never go below 1200 calories/day for women or 1500 for men without medical supervision."
+                }
+            }
+        ]
+    }
+    </script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -36,9 +94,7 @@
             gap: 20px;
             margin: 20px 0;
         }
-        .input-group {
-            margin: 10px 0;
-        }
+        .input-group { margin: 10px 0; }
         label {
             display: block;
             margin-bottom: 8px;
@@ -61,13 +117,8 @@
             gap: 15px;
             flex-wrap: wrap;
         }
-        .radio-option {
-            flex: 1;
-            min-width: 120px;
-        }
-        .radio-option input[type="radio"] {
-            display: none;
-        }
+        .radio-option { flex: 1; min-width: 120px; }
+        .radio-option input[type="radio"] { display: none; }
         .radio-option label {
             display: block;
             padding: 12px;
@@ -217,6 +268,38 @@
             color: #667eea;
             margin-bottom: 10px;
         }
+        .faq-section {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        .faq-section h2 {
+            color: #667eea;
+            margin-bottom: 30px;
+            font-size: 1.8em;
+        }
+        .faq-item {
+            margin-bottom: 25px;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 20px;
+        }
+        .faq-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .faq-question {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        .faq-answer {
+            color: #555;
+            line-height: 1.6;
+        }
         footer {
             text-align: center;
             padding: 40px;
@@ -229,6 +312,7 @@
             .calorie-display { font-size: 2em; }
             .calculator-box { padding: 20px; }
             .macro-grid { grid-template-columns: 1fr; }
+            .content-section, .faq-section { padding: 20px; }
         }
     </style>
 </head>
@@ -290,7 +374,6 @@
                 <div class="input-group">
                     <label for="weight-lbs">Weight</label>
                     <input type="number" id="weight-lbs" placeholder="170" min="50" max="500">
-                    <span class="unit-suffix">lbs</span>
                 </div>
             </div>
 
@@ -298,12 +381,10 @@
                 <div class="input-group">
                     <label for="height-cm">Height</label>
                     <input type="number" id="height-cm" placeholder="178" min="90" max="250">
-                    <span class="unit-suffix">cm</span>
                 </div>
                 <div class="input-group">
                     <label for="weight-kg">Weight</label>
                     <input type="number" id="weight-kg" placeholder="77" min="25" max="230" step="0.1">
-                    <span class="unit-suffix">kg</span>
                 </div>
             </div>
 
@@ -387,17 +468,6 @@
                 <p><strong>Men:</strong> BMR = (10 × weight in kg) + (6.25 × height in cm) - (5 × age in years) + 5</p>
                 <p><strong>Women:</strong> BMR = (10 × weight in kg) + (6.25 × height in cm) - (5 × age in years) - 161</p>
             </div>
-
-            <div class="formula-box">
-                <h3>TDEE Multipliers</h3>
-                <ul>
-                    <li><strong>Sedentary:</strong> BMR × 1.2</li>
-                    <li><strong>Lightly Active:</strong> BMR × 1.375</li>
-                    <li><strong>Moderately Active:</strong> BMR × 1.55</li>
-                    <li><strong>Very Active:</strong> BMR × 1.725</li>
-                    <li><strong>Super Active:</strong> BMR × 1.9</li>
-                </ul>
-            </div>
         </div>
 
         <div class="content-section">
@@ -407,27 +477,30 @@
             <p><strong>TDEE (Total Daily Energy Expenditure):</strong> Your actual daily calorie needs including all activities. This is your maintenance calorie level.</p>
             
             <p><strong>Weight Loss:</strong> We subtract 500 calories/day for 1 lb/week loss (3500 calories = 1 lb fat)</p>
-            
-            <p><strong>Muscle Gain:</strong> We add 500 calories/day for 1 lb/week gain (with proper resistance training)</p>
-            
-            <p><strong>Macronutrients:</strong> Based on balanced diet: 30% protein, 35% carbs, 35% fat. Adjust based on your specific goals.</p>
         </div>
 
-        <div class="content-section">
-            <h2>Tips for Success</h2>
-            <ul style="margin-left: 20px; color: #555;">
-                <li>Track your food intake accurately for best results</li>
-                <li>Adjust calories after 2 weeks if weight isn't changing</li>
-                <li>Prioritize protein to maintain muscle while losing fat</li>
-                <li>Stay hydrated - thirst is often mistaken for hunger</li>
-                <li>Get adequate sleep - it affects hunger hormones</li>
-                <li>Be consistent - results take time</li>
-            </ul>
-        </div>
-
-        <div class="ad-placeholder">
-            Advertisement Space<br><br>
-            Google AdSense Ready
+        <div class="faq-section">
+            <h2>Frequently Asked Questions</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">What is TDEE?</div>
+                <div class="faq-answer">TDEE stands for Total Daily Energy Expenditure. It's the total number of calories your body burns in a day, including your basal metabolic rate (BMR) plus calories burned through activity and digestion.</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">How accurate is this calorie calculator?</div>
+                <div class="faq-answer">This calculator uses the Mifflin-St Jeor equation, which is considered the most accurate formula for estimating BMR and TDEE. However, individual results may vary by 5-10% due to genetic factors and metabolism variations.</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Should I use metric or imperial units?</div>
+                <div class="faq-answer">Both systems work identically - the calculator automatically converts between them. Use whichever you're most comfortable with. The calculator can auto-detect based on your browser settings.</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">How many calories should I eat to lose weight?</div>
+                <div class="faq-answer">To lose 1 pound per week, subtract 500 calories from your TDEE (maintenance calories). For 2 pounds per week, subtract 1000 calories. Never go below 1200 calories/day for women or 1500 for men without medical supervision.</div>
+            </div>
         </div>
     </div>
 
@@ -435,8 +508,10 @@
         <div class="container">
             <p>&copy; 2026 Calorie Calculator. Free nutrition tool.</p>
             <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a> | <a href="#">Contact</a></p>
-            <p style="font-size: 0.9em; margin-top: 10px;">Disclaimer: Consult a healthcare provider before starting any diet or exercise program.</p>
+            <p style="font-size: 0.9em; margin-top: 10px; opacity: 0.7;">Disclaimer: Consult a healthcare provider before starting any diet or exercise program.</p>
         </div>
+    </footer>
+
     <script>
         // Auto-detect unit system based on locale
         function detectUnitSystem() {
@@ -521,134 +596,13 @@
             let timelineText;
             if (goal === 'lose') {
                 targetCalories = tdee - 500;
-                timelineText = `At this rate, you'll lose approximately 1 lb per week. To lose 10 lbs, it will take about 10 weeks.`;
+                timelineText = 'At this rate, you\'ll lose approximately 1 lb per week. To lose 10 lbs, it will take about 10 weeks.';
             } else if (goal === 'gain') {
                 targetCalories = tdee + 500;
-                timelineText = `At this rate, you'll gain approximately 1 lb per week. Focus on resistance training to maximize muscle gain.`;
+                timelineText = 'At this rate, you\'ll gain approximately 1 lb per week. Focus on resistance training to maximize muscle gain.';
             } else {
                 targetCalories = tdee;
-                timelineText = `This is your maintenance level. Eat at this level to maintain your current weight.`;
-            }
-
-            // Calculate BMI
-            const heightM = heightCm / 100;
-            const bmi = weightKg / (heightM * heightM);
-
-            // Calculate macros (30% protein, 35% carbs, 35% fat)
-            const proteinCal = targetCalories * 0.30;
-            const carbsCal = targetCalories * 0.35;
-            const fatCal = targetCalories * 0.35;
-
-            const proteinG = Math.round(proteinCal / 4);
-            const carbsG = Math.round(carbsCal / 4);
-            const fatG = Math.round(fatCal / 9);
-
-            // Display results
-            document.getElementById('target-calories').textContent = Math.round(targetCalories).toLocaleString();
-            document.getElementById('bmr').textContent = Math.round(bmr).toLocaleString();
-            document.getElementById('tdee').textContent = Math.round(tdee).toLocaleString();
-            document.getElementById('bmi').textContent = bmi.toFixed(1);
-            document.getElementById('protein').textContent = proteinG + 'g';
-            document.getElementById('carbs').textContent = carbsG + 'g';
-            document.getElementById('fat').textContent = fatG + 'g';
-            document.getElementById('timeline-text').textContent = timelineText;
-
-            document.getElementById('results').classList.add('show');
-            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    </script>
-</body>
-</html>
-    <script>
-        // Auto-detect unit system based on locale
-        function detectUnitSystem() {
-            const locale = navigator.language || navigator.userLanguage;
-            const usLocales = ['en-US', 'en-CA'];
-            const isUS = usLocales.some(l => locale.startsWith(l));
-            
-            if (localStorage.getItem('unitPreference')) {
-                return localStorage.getItem('unitPreference');
-            }
-            
-            return isUS ? 'imperial' : 'metric';
-        }
-        
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            const preferredUnit = detectUnitSystem();
-            if (preferredUnit === 'metric') {
-                document.getElementById('unit-metric').checked = true;
-                toggleUnits();
-            }
-        });
-        
-        // Toggle between imperial and metric
-        function toggleUnits() {
-            const unit = document.querySelector('input[name="unit"]:checked').value;
-            localStorage.setItem('unitPreference', unit);
-            
-            if (unit === 'imperial') {
-                document.getElementById('imperial-inputs').style.display = '';
-                document.getElementById('metric-inputs').style.display = 'none';
-            } else {
-                document.getElementById('imperial-inputs').style.display = 'none';
-                document.getElementById('metric-inputs').style.display = '';
-            }
-        }
-        
-        function calculateCalories() {
-            const gender = document.querySelector('input[name="gender"]:checked').value;
-            const age = parseFloat(document.getElementById('age').value) || 0;
-            const unit = document.querySelector('input[name="unit"]:checked').value;
-            const activity = parseFloat(document.getElementById('activity').value) || 1.2;
-            const goal = document.getElementById('goal').value;
-            
-            let weightKg, heightCm;
-            
-            if (unit === 'imperial') {
-                const weightLbs = parseFloat(document.getElementById('weight-lbs').value) || 0;
-                const heightFt = parseFloat(document.getElementById('height-ft').value) || 0;
-                const heightIn = parseFloat(document.getElementById('height-in').value) || 0;
-                
-                if (age < 15 || weightLbs < 50 || heightFt < 3) {
-                    alert('Please enter valid age (15+), weight (50+ lbs), and height');
-                    return;
-                }
-                
-                weightKg = weightLbs * 0.453592;
-                heightCm = ((heightFt * 12) + heightIn) * 2.54;
-            } else {
-                weightKg = parseFloat(document.getElementById('weight-kg').value) || 0;
-                heightCm = parseFloat(document.getElementById('height-cm').value) || 0;
-                
-                if (age < 15 || weightKg < 25 || heightCm < 90) {
-                    alert('Please enter valid age (15+), weight (25+ kg), and height');
-                    return;
-                }
-            }
-
-            // Calculate BMR using Mifflin-St Jeor
-            let bmr;
-            if (gender === 'male') {
-                bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * age) + 5;
-            } else {
-                bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * age) - 161;
-            }
-
-            // Calculate TDEE
-            const tdee = bmr * activity;
-
-            // Calculate target based on goal
-            let targetCalories;
-            let timelineText;
-            if (goal === 'lose') {
-                targetCalories = tdee - 500;
-                timelineText = `At this rate, you'll lose approximately 1 lb per week. To lose 10 lbs, it will take about 10 weeks.`;
-            } else if (goal === 'gain') {
-                targetCalories = tdee + 500;
-                timelineText = `At this rate, you'll gain approximately 1 lb per week. Focus on resistance training to maximize muscle gain.`;
-            } else {
-                targetCalories = tdee;
-                timelineText = `This is your maintenance level. Eat at this level to maintain your current weight.`;
+                timelineText = 'This is your maintenance level. Eat at this level to maintain your current weight.';
             }
 
             // Calculate BMI
