@@ -1,0 +1,33 @@
+name: Deploy Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-ssh:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Test SSH Connection
+      env:
+        DEPLOY_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+        SERVER_HOST: ${{ secrets.SERVER_HOST }}
+        SERVER_USER: ${{ secrets.SERVER_USER }}
+      run: |
+        echo "Testing SSH connection to $SERVER_USER@$SERVER_HOST"
+        
+        # Setup SSH
+        mkdir -p ~/.ssh
+        echo "$DEPLOY_KEY" > ~/.ssh/deploy_key
+        chmod 600 ~/.ssh/deploy_key
+        
+        # Check key format
+        echo "Key file size:"
+        wc -c ~/.ssh/deploy_key
+        
+        # Add host to known hosts
+        ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts 2>/dev/null || true
+        
+        # Try SSH with output
+        ssh -o StrictHostKeyChecking=no -o BatchMode=yes -o ConnectTimeout=10 -i ~/.ssh/deploy_key $SERVER_USER@$SERVER_HOST "echo 'SUCCESS: SSH connection works'" || echo "SSH failed"
