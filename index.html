@@ -837,6 +837,8 @@
                 <div class="calorie-label">Your Daily Calorie Target</div>
                 <div class="calorie-display" id="target-calories">0</div>
                 
+                <div id="bariatric-indicator" style="display: none; margin: 15px 0; padding: 12px; background: #fff3e0; border-radius: 8px; border-left: 4px solid #ff9800; font-size: 14px;"></div>
+                
                 <div class="result-grid">
                     <div class="result-card">
                         <div class="result-value" id="bmr">0</div>
@@ -1188,6 +1190,19 @@
             document.getElementById('carbs').textContent = carbsG + 'g';
             document.getElementById('fat').textContent = fatG + 'g';
             document.getElementById('timeline-text').textContent = timelineText;
+            
+            // Show bariatric indicator if applicable
+            const bariatricIndicator = document.getElementById('bariatric-indicator');
+            if (bariatric !== 'none') {
+                bariatricIndicator.style.display = 'block';
+                bariatricIndicator.innerHTML = '<strong>🏥 Bariatric Mode Active:</strong> ' + 
+                    (bariatric === 'recent' ? 'Recent Surgery (0-6 months)' :
+                     bariatric === 'recovery' ? 'Recovery Phase (6-12 months)' :
+                     'Long-term Maintenance (1+ years)') + 
+                    ' - Calories adjusted for surgical recovery';
+            } else {
+                bariatricIndicator.style.display = 'none';
+            }
 
             // Show results panel and scroll to it
             document.getElementById('results').classList.add('show');
