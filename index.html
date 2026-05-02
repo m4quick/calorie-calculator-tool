@@ -422,6 +422,39 @@
                 <small id="bariatric-note" style="color: #667eea; display: none; margin-top: 5px;">
                     Bariatric patients need higher protein and lower calories. Consult your surgical team.
                 </small>
+                
+                <div id="bariatric-guidelines" style="display: none; margin-top: 15px; padding: 20px; background: #f0f7ff; border-radius: 8px; border-left: 4px solid #667eea;">
+                    <h4 style="color: #667eea; margin-bottom: 15px;">📋 Bariatric Nutrition Guidelines</h4>
+                    
+                    <div class="guideline-section" style="margin-bottom: 20px;">
+                        <h5 style="color: #333; margin-bottom: 10px;">Recent Surgery (0-6 Months)</h5>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div style="background: white; padding: 15px; border-radius: 6px;">
+                                <h6 style="color: #667eea; margin-bottom: 8px;">ASMBS Guidelines</h6>
+                                <ul style="margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.6;">
+                                    <li><strong>Calories:</strong> 800-1,200/day</li>
+                                    <li><strong>Protein:</strong> 60-80g (women), 80-100g (men)</li>
+                                    <li><strong>Phase:</strong> Liquids → Pureed → Soft</li>
+                                    <li><strong>Fluids:</strong> 64+ oz/day</li>
+                                </ul>
+                            </div>
+                            <div style="background: white; padding: 15px; border-radius: 6px;">
+                                <h6 style="color: #28a745; margin-bottom: 8px;">AND Guidelines</h6>
+                                <ul style="margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.6;">
+                                    <li><strong>Calories:</strong> 900-1,000/day</li>
+                                    <li><strong>Protein:</strong> 60-80g (60-75% from supplements)</li>
+                                    <li><strong>Focus:</strong> Protein-first eating</li>
+                                    <li><strong>Supplements:</strong> Multivitamin + B12</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div style="background: #fff3cd; padding: 12px; border-radius: 6px; margin-top: 10px; font-size: 13px;">
+                            <strong>⚠️ Key Recommendations:</strong> Eat protein first, separate fluids from meals by 30 minutes, take prescribed supplements daily.
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <button onclick="calculateCalories()">Calculate My Calories</button>
@@ -602,7 +635,18 @@
         function toggleBariatric() {
             const bariatric = document.getElementById('bariatric').value;
             const note = document.getElementById('bariatric-note');
-            note.style.display = bariatric !== 'none' ? 'block' : 'none';
+            const guidelines = document.getElementById('bariatric-guidelines');
+            
+            if (bariatric === 'none') {
+                note.style.display = 'none';
+                guidelines.style.display = 'none';
+            } else {
+                note.style.display = 'block';
+                guidelines.style.display = 'block';
+                
+                // Here you could load different content based on phase
+                // For now showing the "Recent Surgery" example
+            }
         }
         
         // Toggle between imperial and metric
