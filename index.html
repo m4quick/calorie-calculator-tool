@@ -423,7 +423,19 @@
                     Bariatric patients need higher protein and lower calories. Consult your surgical team.
                 </small>
                 
-                <div id="bariatric-guidelines" style="display: none; margin-top: 15px; padding: 20px; background: #f0f7ff; border-radius: 8px; border-left: 4px solid #667eea;">
+                <div class="input-group" id="bariatric-organization-group" style="display: none; margin-top: 10px;">
+                <label for="bariatric-org">Select Guideline Organization</label>
+                <select id="bariatric-org" onchange="updateBariatricCalculation()">
+                    <option value="asmbs">ASMBS - American Society for Metabolic and Bariatric Surgery</option>
+                    <option value="and">AND - Academy of Nutrition and Dietetics (formerly ADA)</option>
+                </select>
+                <small style="color: #666; display: block; margin-top: 5px; font-size: 12px;">
+                    <a href="https://asmbs.org/resources/guidelines" target="_blank" style="color: #667eea;">ASMBS Guidelines →</a> | 
+                    <a href="https://www.eatright.org" target="_blank" style="color: #28a745;">AND (formerly ADA) Guidelines →</a>
+                </small>
+            </div>
+
+            <div id="bariatric-guidelines" style="display: none; margin-top: 15px; padding: 20px; background: #f0f7ff; border-radius: 8px; border-left: 4px solid #667eea;">
                     <h4 style="color: #667eea; margin-bottom: 15px;">📋 Bariatric Nutrition Guidelines</h4>
                     
                     <!-- Phase: Recent Surgery (0-6 months) -->
@@ -691,6 +703,7 @@
             const bariatric = document.getElementById('bariatric').value;
             const note = document.getElementById('bariatric-note');
             const guidelines = document.getElementById('bariatric-guidelines');
+            const orgGroup = document.getElementById('bariatric-organization-group');
             
             // Hide all phase-specific content
             document.querySelectorAll('.guideline-phase').forEach(el => el.style.display = 'none');
@@ -698,15 +711,33 @@
             if (bariatric === 'none') {
                 note.style.display = 'none';
                 guidelines.style.display = 'none';
+                orgGroup.style.display = 'none';
             } else {
                 note.style.display = 'block';
                 guidelines.style.display = 'block';
+                orgGroup.style.display = 'block';
                 
                 // Show the appropriate phase content
                 const phaseDiv = document.getElementById('guidelines-' + bariatric);
                 if (phaseDiv) {
                     phaseDiv.style.display = 'block';
                 }
+                
+                // Update calculation if org already selected
+                updateBariatricCalculation();
+            }
+        }
+        
+        function updateBariatricCalculation() {
+            // This will be called when organization is selected
+            // Will recalculate based on ASMBS vs AND guidelines
+            const org = document.getElementById('bariatric-org');
+            const phase = document.getElementById('bariatric');
+            
+            if (org && phase.value !== 'none') {
+                console.log('Organization selected:', org.value);
+                console.log('Phase selected:', phase.value);
+                // Future: Apply organization-specific adjustments
             }
         }
         
