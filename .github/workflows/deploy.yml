@@ -75,12 +75,20 @@ jobs:
         echo "$DEPLOY_KEY" > ~/.ssh/deploy_key
         chmod 600 ~/.ssh/deploy_key
         
-        # Add host to known hosts
-        ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts 2>/dev/null
+        # Debug: Check key file
+        echo "SSH key file created:"
+        ls -la ~/.ssh/deploy_key
         
-        # Deploy via SCP to user's home directory (no sudo needed)
-        ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST "mkdir -p ~/www/calorie-calculator-tool/"
-        scp -i ~/.ssh/deploy_key -r ./* $SERVER_USER@$SERVER_HOST:~/www/calorie-calculator-tool/
+        # Add host to known hosts
+        ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts 2>/dev/null || echo "ssh-keyscan failed but continuing..."
+        
+        # Debug: Test SSH connection
+        echo "Testing SSH connection..."
+        ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/deploy_key $SERVER_USER@$SERVER_HOST "echo 'SSH works!'" 2>&1 || echo "SSH test failed"
+        
+        # Deploy via SCP
+        echo "Starting SCP deployment..."
+        scp -v -o StrictHostKeyChecking=no -i ~/.ssh/deploy_key -r ./* $SERVER_USER@$SERVER_HOST:~/www/calorie-calculator-tool/
         
         echo "✅ Deployed successfully"
     
