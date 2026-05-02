@@ -426,9 +426,9 @@
                 <div id="bariatric-guidelines" style="display: none; margin-top: 15px; padding: 20px; background: #f0f7ff; border-radius: 8px; border-left: 4px solid #667eea;">
                     <h4 style="color: #667eea; margin-bottom: 15px;">📋 Bariatric Nutrition Guidelines</h4>
                     
-                    <div class="guideline-section" style="margin-bottom: 20px;">
+                    <!-- Phase: Recent Surgery (0-6 months) -->
+                    <div id="guidelines-recent" class="guideline-phase" style="display: none;">
                         <h5 style="color: #333; margin-bottom: 10px;">Recent Surgery (0-6 Months)</h5>
-                        
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                             <div style="background: white; padding: 15px; border-radius: 6px;">
                                 <h6 style="color: #667eea; margin-bottom: 8px;">ASMBS Guidelines</h6>
@@ -449,9 +449,64 @@
                                 </ul>
                             </div>
                         </div>
-                        
                         <div style="background: #fff3cd; padding: 12px; border-radius: 6px; margin-top: 10px; font-size: 13px;">
                             <strong>⚠️ Key Recommendations:</strong> Eat protein first, separate fluids from meals by 30 minutes, take prescribed supplements daily.
+                        </div>
+                    </div>
+
+                    <!-- Phase: Recovery (6-12 months) -->
+                    <div id="guidelines-recovery" class="guideline-phase" style="display: none;">
+                        <h5 style="color: #333; margin-bottom: 10px;">Recovery Phase (6-12 Months)</h5>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div style="background: white; padding: 15px; border-radius: 6px;">
+                                <h6 style="color: #667eea; margin-bottom: 8px;">ASMBS Guidelines</h6>
+                                <ul style="margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.6;">
+                                    <li><strong>Calories:</strong> 1,000-1,400/day</li>
+                                    <li><strong>Protein:</strong> 60-80g (women), 80-100g (men)</li>
+                                    <li><strong>Phase:</strong> Soft foods → Regular textures</li>
+                                    <li><strong>Weight Loss:</strong> 1-2 lbs/week expected</li>
+                                </ul>
+                            </div>
+                            <div style="background: white; padding: 15px; border-radius: 6px;">
+                                <h6 style="color: #28a745; margin-bottom: 8px;">AND Guidelines</h6>
+                                <ul style="margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.6;">
+                                    <li><strong>Calories:</strong> 1,000-1,200/day</li>
+                                    <li><strong>Protein:</strong> 60-80g (50% from food)</li>
+                                    <li><strong>Focus:</strong> Transition to whole foods</li>
+                                    <li><strong>Supplements:</strong> Continue B12, add Iron if needed</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div style="background: #d4edda; padding: 12px; border-radius: 6px; margin-top: 10px; font-size: 13px;">
+                            <strong>✓ Progress Indicators:</strong> Tolerating regular textures, stable weight loss, meeting protein goals consistently.
+                        </div>
+                    </div>
+
+                    <!-- Phase: Long-term (1+ years) -->
+                    <div id="guidelines-longterm" class="guideline-phase" style="display: none;">
+                        <h5 style="color: #333; margin-bottom: 10px;">Long-Term Maintenance (1+ Years)</h5>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div style="background: white; padding: 15px; border-radius: 6px;">
+                                <h6 style="color: #667eea; margin-bottom: 8px;">ASMBS Guidelines</h6>
+                                <ul style="margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.6;">
+                                    <li><strong>Calories:</strong> 1,200-1,800/day (maintenance)</li>
+                                    <li><strong>Protein:</strong> 60-80g minimum</li>
+                                    <li><strong>Diet:</strong> Regular balanced diet</li>
+                                    <li><strong>Monitoring:</strong> Annual labs required</li>
+                                </ul>
+                            </div>
+                            <div style="background: white; padding: 15px; border-radius: 6px;">
+                                <h6 style="color: #28a745; margin-bottom: 8px;">AND Guidelines</h6>
+                                <ul style="margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.6;">
+                                    <li><strong>Calories:</strong> Based on TDEE - 500 for maintenance</li>
+                                    <li><strong>Protein:</strong> 60-80g (whole food sources)</li>
+                                    <li><strong>Focus:</strong> Sustainable eating patterns</li>
+                                    <li><strong>Supplements:</strong> Lifelong multivitamin + B12</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div style="background: #d1ecf1; padding: 12px; border-radius: 6px; margin-top: 10px; font-size: 13px;">
+                            <strong>🎯 Maintenance Goals:</strong> Weight stable within 5-10 lbs, annual nutrition follow-up, vitamin levels monitored.
                         </div>
                     </div>
                 </div>
@@ -637,6 +692,9 @@
             const note = document.getElementById('bariatric-note');
             const guidelines = document.getElementById('bariatric-guidelines');
             
+            // Hide all phase-specific content
+            document.querySelectorAll('.guideline-phase').forEach(el => el.style.display = 'none');
+            
             if (bariatric === 'none') {
                 note.style.display = 'none';
                 guidelines.style.display = 'none';
@@ -644,8 +702,11 @@
                 note.style.display = 'block';
                 guidelines.style.display = 'block';
                 
-                // Here you could load different content based on phase
-                // For now showing the "Recent Surgery" example
+                // Show the appropriate phase content
+                const phaseDiv = document.getElementById('guidelines-' + bariatric);
+                if (phaseDiv) {
+                    phaseDiv.style.display = 'block';
+                }
             }
         }
         
