@@ -35,6 +35,14 @@
         "mainEntity": [
             {
                 "@type": "Question",
+                "name": "How do calorie needs change after bariatric surgery?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "After bariatric surgery, your calorie needs decrease significantly while protein needs increase. Recent surgery patients (0-6 months) typically need 40% fewer calories but 45% from protein. Recovery phase (6-12 months) needs 25% fewer calories. Long-term maintenance requires ongoing attention to protein intake and portion control."
+                }
+            },
+            {
+                "@type": "Question",
                 "name": "What is TDEE?",
                 "acceptedAnswer": {
                     "@type": "Answer",
@@ -412,6 +420,19 @@
                 </select>
             </div>
 
+            <div class="input-group">
+                <label for="bariatric">Bariatric Surgery Status</label>
+                <select id="bariatric" onchange="toggleBariatric()">
+                    <option value="none">No surgery</option>
+                    <option value="recent">Recent surgery (0-6 months)</option>
+                    <option value="recovery">Recovery phase (6-12 months)</option>
+                    <option value="longterm">Long-term maintenance (1+ years)</option>
+                </select>
+                <small id="bariatric-note" style="color: #667eea; display: none; margin-top: 5px;">
+                    Bariatric patients need higher protein and lower calories. Consult your surgical team.
+                </small>
+            </div>
+
             <button onclick="calculateCalories()">Calculate My Calories</button>
 
             <div id="results" class="results">
@@ -487,6 +508,11 @@
             <h2>Frequently Asked Questions</h2>
             
             <div class="faq-item">
+                <div class="faq-question">How many calories do I need after gastric bypass or sleeve surgery?</div>
+                <div class="faq-answer">Post-surgery calorie needs vary by phase. Recent patients (0-6 months) typically need 800-1000 calories with 60-80g protein. Recovery phase (6-12 months) needs 1000-1200 calories. Long-term maintenance usually stabilizes at 1200-1500 calories. Always follow your surgeon's specific guidelines and prioritize protein at every meal.</div>
+            </div>
+            
+            <div class="faq-item">
                 <div class="faq-question">What is TDEE?</div>
                 <div class="faq-answer">TDEE stands for Total Daily Energy Expenditure. It's the total number of calories your body burns in a day, including your basal metabolic rate (BMR) plus calories burned through activity and digestion.</div>
             </div>
@@ -538,6 +564,13 @@
                 toggleUnits();
             }
         });
+        
+        // Toggle bariatric info
+        function toggleBariatric() {
+            const bariatric = document.getElementById('bariatric').value;
+            const note = document.getElementById('bariatric-note');
+            note.style.display = bariatric !== 'none' ? 'block' : 'none';
+        }
         
         // Toggle between imperial and metric
         function toggleUnits() {
@@ -592,31 +625,51 @@
                 bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * age) - 161;
             }
 
-            // Calculate TDEE
             const tdee = bmr * activity;
+
+            // Bariatric surgery adjustments
+            const bariatric = document.getElementById('bariatric').value;
+            let bariatricMultiplier = 1;
+            let proteinMultiplier = 0.30;
+            let timelineExtra = '';
+            
+            if (bariatric === 'recent') {
+                bariatricMultiplier = 0.6; // 40% reduction
+                proteinMultiplier = 0.45; // 45% protein
+                timelineExtra = ' As a recent bariatric surgery patient, focus on protein first, then vegetables. Avoid sugar and high-fat foods.';
+            } else if (bariatric === 'recovery') {
+                bariatricMultiplier = 0.75; // 25% reduction
+                proteinMultiplier = 0.40; // 40% protein
+                timelineExtra = ' During recovery, prioritize protein at every meal and stay hydrated.';
+            } else if (bariatric === 'longterm') {
+                bariatricMultiplier = 0.9; // 10% reduction
+                proteinMultiplier = 0.35; // 35% protein
+                timelineExtra = ' Long-term success requires consistent protein intake and portion control.';
+            }
 
             // Calculate target based on goal
             let targetCalories;
             let timelineText;
             if (goal === 'lose') {
-                targetCalories = tdee - 500;
-                timelineText = 'At this rate, you\'ll lose approximately 1 lb per week. To lose 10 lbs, it will take about 10 weeks.';
+                targetCalories = (tdee - 500) * bariatricMultiplier;
+                timelineText = 'At this rate, you\'ll lose approximately 1 lb per week.' + timelineExtra;
             } else if (goal === 'gain') {
-                targetCalories = tdee + 500;
-                timelineText = 'At this rate, you\'ll gain approximately 1 lb per week. Focus on resistance training to maximize muscle gain.';
+                targetCalories = (tdee + 500) * bariatricMultiplier;
+                timelineText = 'At this rate, you\'ll gain approximately 1 lb per week. Focus on resistance training.' + timelineExtra;
             } else {
-                targetCalories = tdee;
-                timelineText = 'This is your maintenance level. Eat at this level to maintain your current weight.';
+                targetCalories = tdee * bariatricMultiplier;
+                timelineText = 'This is your maintenance level.' + timelineExtra;
             }
 
             // Calculate BMI
             const heightM = heightCm / 100;
             const bmi = weightKg / (heightM * heightM);
 
-            // Calculate macros (30% protein, 35% carbs, 35% fat)
-            const proteinCal = targetCalories * 0.30;
-            const carbsCal = targetCalories * 0.35;
-            const fatCal = targetCalories * 0.35;
+            // Calculate macros with bariatric adjustments
+            const proteinCal = targetCalories * proteinMultiplier;
+            const remainingCal = targetCalories - proteinCal;
+            const carbsCal = remainingCal * 0.5;
+            const fatCal = remainingCal * 0.5;
 
             const proteinG = Math.round(proteinCal / 4);
             const carbsG = Math.round(carbsCal / 4);
