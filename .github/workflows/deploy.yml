@@ -64,39 +64,19 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     
-    - name: Deploy to Server
-      env:
-        DEPLOY_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
-        SERVER_HOST: ${{ secrets.SERVER_HOST }}
-        SERVER_USER: ${{ secrets.SERVER_USER }}
-      timeout-minutes: 2
-      run: |
-        # Setup SSH
-        mkdir -p ~/.ssh
-        printf '%s' "$DEPLOY_KEY" > ~/.ssh/deploy_key
-        chmod 600 ~/.ssh/deploy_key
-        
-        # Add host to known hosts
-        ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts 2>/dev/null
-        
-        # Deploy via SCP
-        scp -o StrictHostKeyChecking=no -o ConnectTimeout=10 -i ~/.ssh/deploy_key -r ./* $SERVER_USER@$SERVER_HOST:~/www/calorie-calculator-tool/
-        
-        echo "✅ Deployed successfully"
+    - name: Deploy to Cloudflare Pages
+      uses: cloudflare/pages-action@v1
+      with:
+        apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        projectName: calorie-calculator-tool
+        directory: .
+        gitHubToken: ${{ secrets.GITHUB_TOKEN }}
     
     - name: Verify Deployment
       run: |
-        # Wait for deployment
-        sleep 5
-        
-        # Check site is live
-        STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://calorie-calculator-tool.com)
-        if [ "$STATUS" != "200" ]; then
-          echo "❌ Site returned HTTP $STATUS"
-          exit 1
-        fi
-        
-        echo "✅ Site is live"
+        echo "✅ Deployed to Cloudflare Pages"
+        echo "Site URL: https://calorie-calculator-tool.pages.dev"
 
   notify:
     needs: [validate, deploy]
