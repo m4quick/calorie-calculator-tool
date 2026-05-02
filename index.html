@@ -426,6 +426,7 @@
                 <div class="input-group" id="bariatric-organization-group" style="display: none; margin-top: 10px;">
                 <label for="bariatric-org">Select Guideline Organization</label>
                 <select id="bariatric-org" onchange="updateBariatricCalculation()">
+                    <option value="">-- Compare both guidelines --</option>
                     <option value="asmbs">ASMBS - American Society for Metabolic and Bariatric Surgery</option>
                     <option value="and">AND - Academy of Nutrition and Dietetics (formerly ADA)</option>
                 </select>
@@ -756,6 +757,17 @@
         }
         
         function calculateCalories() {
+            // Auto-select ASMBS if bariatric is selected but no org chosen
+            const bariatricPhase = document.getElementById('bariatric').value;
+            const bariatricOrg = document.getElementById('bariatric-org');
+            if (bariatricPhase !== 'none' && bariatricOrg && bariatricOrg.value === '') {
+                bariatricOrg.value = 'asmbs';
+                // Trigger the change to update the guidelines display
+                if (typeof updateBariatricCalculation === 'function') {
+                    updateBariatricCalculation();
+                }
+            }
+
             const gender = document.querySelector('input[name="gender"]:checked').value;
             const age = parseFloat(document.getElementById('age').value) || 0;
             const unit = document.querySelector('input[name="unit"]:checked').value;
