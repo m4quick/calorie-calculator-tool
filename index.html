@@ -210,6 +210,184 @@
             font-size: 0.9em;
             margin-top: 5px;
         }
+        /* ========================================
+           BARIATRIC SURGERY FEATURE STYLES
+           Modern card-based design with animations
+           ======================================== */
+        
+        /* Main container for bariatric guidelines */
+        #bariatric-guidelines {
+            background: linear-gradient(135deg, #f0f7ff 0%, #e8f4f8 100%);
+            border-left: 4px solid #667eea;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
+        }
+        
+        /* Organization selector styling */
+        #bariatric-organization-group {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+        
+        /* Comparison view - dual card layout */
+        .guideline-comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 15px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .guideline-comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Individual guideline cards */
+        .guideline-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .guideline-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+        
+        /* Card headers with organization colors */
+        .guideline-card.asmbs {
+            border-top: 3px solid #667eea;
+        }
+        
+        .guideline-card.and {
+            border-top: 3px solid #28a745;
+        }
+        
+        .guideline-card h6 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .guideline-card.asmbs h6 {
+            color: #667eea;
+        }
+        
+        .guideline-card.and h6 {
+            color: #28a745;
+        }
+        
+        /* Single organization view - full width */
+        .guideline-single {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .guideline-single.asmbs {
+            border-left: 4px solid #667eea;
+        }
+        
+        .guideline-single.and {
+            border-left: 4px solid #28a745;
+        }
+        
+        /* Detailed list styling */
+        .guideline-details {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .guideline-details li {
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .guideline-details li:last-child {
+            border-bottom: none;
+        }
+        
+        .guideline-details li strong {
+            color: #333;
+            display: inline-block;
+            min-width: 140px;
+        }
+        
+        /* Alert/notice boxes */
+        .guideline-alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 13px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        .guideline-alert.warning {
+            background: #fff3cd;
+            border-left: 3px solid #ffc107;
+        }
+        
+        .guideline-alert.success {
+            background: #d4edda;
+            border-left: 3px solid #28a745;
+        }
+        
+        .guideline-alert.info {
+            background: #d1ecf1;
+            border-left: 3px solid #17a2b8;
+        }
+        
+        .guideline-alert .icon {
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        
+        /* Phase headers */
+        .phase-header {
+            color: #333;
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0 0 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        /* View toggle animations */
+        .guideline-view {
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* ========================================
+           END BARIATRIC STYLES
+           ======================================== */
+        
         .goal-section {
             background: white;
             padding: 20px;
@@ -443,21 +621,21 @@
         <h4 style="color: #667eea; margin-bottom: 15px;">📋 Bariatric Nutrition Guidelines</h4>
         
         <!-- Comparison: Recent -->
-        <div id="comp-recent" class="guideline-phase" style="display: none;">
-            <h5 style="color: #333; margin-bottom: 10px;">Recent Surgery (0-6 Months)</h5>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                <div style="background: white; padding: 15px; border-radius: 6px;">
-                    <h6 style="color: #667eea; margin-bottom: 8px;">ASMBS Guidelines</h6>
-                    <ul style="margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.6;">
+        <div id="comp-recent" class="guideline-phase guideline-view" style="display: none;">
+            <h5 class="phase-header">Recent Surgery (0-6 Months)</h5>
+            <div class="guideline-comparison-grid">
+                <div class="guideline-card asmbs">
+                    <h6>ASMBS Guidelines</h6>
+                    <ul class="guideline-details">
                         <li><strong>Calories:</strong> 800-1,200/day</li>
                         <li><strong>Protein:</strong> 60-80g (women), 80-100g (men)</li>
                         <li><strong>Phase:</strong> Liquids → Pureed → Soft</li>
                         <li><strong>Fluids:</strong> 64+ oz/day</li>
                     </ul>
                 </div>
-                <div style="background: white; padding: 15px; border-radius: 6px;">
-                    <h6 style="color: #28a745; margin-bottom: 8px;">AND Guidelines (formerly ADA)</h6>
-                    <ul style="margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.6;">
+                <div class="guideline-card and">
+                    <h6>AND Guidelines (formerly ADA)</h6>
+                    <ul class="guideline-details">
                         <li><strong>Calories:</strong> 900-1,000/day</li>
                         <li><strong>Protein:</strong> 60-80g (60-75% from supplements)</li>
                         <li><strong>Focus:</strong> Protein-first eating</li>
@@ -465,27 +643,28 @@
                     </ul>
                 </div>
             </div>
-            <div style="background: #fff3cd; padding: 12px; border-radius: 6px; margin-top: 10px; font-size: 13px;">
-                <strong>⚠️ Key Recommendations:</strong> Eat protein first, separate fluids from meals by 30 minutes, take prescribed supplements daily.
+            <div class="guideline-alert warning">
+                <span class="icon">⚠️</span>
+                <div><strong>Key Recommendations:</strong> Eat protein first, separate fluids from meals by 30 minutes, take prescribed supplements daily.</div>
             </div>
         </div>
 
         <!-- Comparison: Recovery -->
-        <div id="comp-recovery" class="guideline-phase" style="display: none;">
-            <h5 style="color: #333; margin-bottom: 10px;">Recovery Phase (6-12 Months)</h5>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                <div style="background: white; padding: 15px; border-radius: 6px;">
-                    <h6 style="color: #667eea; margin-bottom: 8px;">ASMBS Guidelines</h6>
-                    <ul style="margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.6;">
+        <div id="comp-recovery" class="guideline-phase guideline-view" style="display: none;">
+            <h5 class="phase-header">Recovery Phase (6-12 Months)</h5>
+            <div class="guideline-comparison-grid">
+                <div class="guideline-card asmbs">
+                    <h6>ASMBS Guidelines</h6>
+                    <ul class="guideline-details">
                         <li><strong>Calories:</strong> 1,000-1,400/day</li>
                         <li><strong>Protein:</strong> 60-80g (women), 80-100g (men)</li>
                         <li><strong>Phase:</strong> Soft foods → Regular textures</li>
                         <li><strong>Weight Loss:</strong> 1-2 lbs/week expected</li>
                     </ul>
                 </div>
-                <div style="background: white; padding: 15px; border-radius: 6px;">
-                    <h6 style="color: #28a745; margin-bottom: 8px;">AND Guidelines (formerly ADA)</h6>
-                    <ul style="margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.6;">
+                <div class="guideline-card and">
+                    <h6>AND Guidelines (formerly ADA)</h6>
+                    <ul class="guideline-details">
                         <li><strong>Calories:</strong> 1,000-1,200/day</li>
                         <li><strong>Protein:</strong> 60-80g (50% from food)</li>
                         <li><strong>Focus:</strong> Transition to whole foods</li>
@@ -493,27 +672,28 @@
                     </ul>
                 </div>
             </div>
-            <div style="background: #d4edda; padding: 12px; border-radius: 6px; margin-top: 10px; font-size: 13px;">
-                <strong>✓ Progress Indicators:</strong> Tolerating regular textures, stable weight loss, meeting protein goals consistently.
+            <div class="guideline-alert success">
+                <span class="icon">✓</span>
+                <div><strong>Progress Indicators:</strong> Tolerating regular textures, stable weight loss, meeting protein goals consistently.</div>
             </div>
         </div>
 
         <!-- Comparison: Long-term -->
-        <div id="comp-longterm" class="guideline-phase" style="display: none;">
-            <h5 style="color: #333; margin-bottom: 10px;">Long-Term Maintenance (1+ Years)</h5>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                <div style="background: white; padding: 15px; border-radius: 6px;">
-                    <h6 style="color: #667eea; margin-bottom: 8px;">ASMBS Guidelines</h6>
-                    <ul style="margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.6;">
+        <div id="comp-longterm" class="guideline-phase guideline-view" style="display: none;">
+            <h5 class="phase-header">Long-Term Maintenance (1+ Years)</h5>
+            <div class="guideline-comparison-grid">
+                <div class="guideline-card asmbs">
+                    <h6>ASMBS Guidelines</h6>
+                    <ul class="guideline-details">
                         <li><strong>Calories:</strong> 1,200-1,800/day (maintenance)</li>
                         <li><strong>Protein:</strong> 60-80g minimum</li>
                         <li><strong>Diet:</strong> Regular balanced diet</li>
                         <li><strong>Monitoring:</strong> Annual labs required</li>
                     </ul>
                 </div>
-                <div style="background: white; padding: 15px; border-radius: 6px;">
-                    <h6 style="color: #28a745; margin-bottom: 8px;">AND Guidelines (formerly ADA)</h6>
-                    <ul style="margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.6;">
+                <div class="guideline-card and">
+                    <h6>AND Guidelines (formerly ADA)</h6>
+                    <ul class="guideline-details">
                         <li><strong>Calories:</strong> Based on TDEE - 500 for maintenance</li>
                         <li><strong>Protein:</strong> 60-80g (whole food sources)</li>
                         <li><strong>Focus:</strong> Sustainable eating patterns</li>
@@ -521,8 +701,9 @@
                     </ul>
                 </div>
             </div>
-            <div style="background: #d1ecf1; padding: 12px; border-radius: 6px; margin-top: 10px; font-size: 13px;">
-                <strong>🎯 Maintenance Goals:</strong> Weight stable within 5-10 lbs, annual nutrition follow-up, vitamin levels monitored.
+            <div class="guideline-alert info">
+                <span class="icon">🎯</span>
+                <div><strong>Maintenance Goals:</strong> Weight stable within 5-10 lbs, annual nutrition follow-up, vitamin levels monitored.</div>
             </div>
         </div>
     </div>
@@ -799,12 +980,35 @@
     </footer>
 
     <script>
-        // Auto-detect unit system based on locale
+        /**
+         * ===========================================
+         * CALORIE CALCULATOR - MAIN APPLICATION LOGIC
+         * ===========================================
+         * 
+         * Features:
+         * - BMR/TDEE calculation using Mifflin-St Jeor equation
+         * - Unit system auto-detection (imperial/metric)
+         * - Bariatric surgery nutrition guidelines (ASMBS & AND)
+         * - Macro breakdown and weight loss timeline
+         * 
+         * Dependencies: None (vanilla JavaScript)
+         */
+        
+        // =====================================================
+        // UNIT SYSTEM & PREFERENCES
+        // =====================================================
+        
+        /**
+         * Detect user's preferred unit system based on browser locale
+         * Falls back to previously saved preference if available
+         * @returns {string} 'imperial' or 'metric'
+         */
         function detectUnitSystem() {
             const locale = navigator.language || navigator.userLanguage;
             const usLocales = ['en-US', 'en-CA'];
             const isUS = usLocales.some(l => locale.startsWith(l));
             
+            // Check for saved preference first
             if (localStorage.getItem('unitPreference')) {
                 return localStorage.getItem('unitPreference');
             }
@@ -812,7 +1016,10 @@
             return isUS ? 'imperial' : 'metric';
         }
         
-        // Initialize on page load
+        /**
+         * Initialize unit system on page load
+         * Applies detected or saved preference
+         */
         document.addEventListener('DOMContentLoaded', function() {
             const preferredUnit = detectUnitSystem();
             if (preferredUnit === 'metric') {
@@ -821,54 +1028,10 @@
             }
         });
         
-        // Toggle bariatric info
-        function toggleBariatric() {
-            const bariatric = document.getElementById('bariatric').value;
-            const note = document.getElementById('bariatric-note');
-            const guidelines = document.getElementById('bariatric-guidelines');
-            const orgGroup = document.getElementById('bariatric-organization-group');
-            const org = document.getElementById('bariatric-org').value;
-            
-            // Hide all phase-specific content and views
-            document.querySelectorAll('.guideline-phase').forEach(el => el.style.display = 'none');
-            document.getElementById('guidelines-comparison').style.display = 'none';
-            document.getElementById('guidelines-asmbs').style.display = 'none';
-            document.getElementById('guidelines-and').style.display = 'none';
-            
-            if (bariatric === 'none') {
-                note.style.display = 'none';
-                guidelines.style.display = 'none';
-                orgGroup.style.display = 'none';
-            } else {
-                note.style.display = 'block';
-                guidelines.style.display = 'block';
-                orgGroup.style.display = 'block';
-                
-                if (org === '' || org === null) {
-                    // Show comparison view
-                    document.getElementById('guidelines-comparison').style.display = 'block';
-                    const phaseDiv = document.getElementById('comp-' + bariatric);
-                    if (phaseDiv) phaseDiv.style.display = 'block';
-                } else if (org === 'asmbs') {
-                    // Show ASMBS only
-                    document.getElementById('guidelines-asmbs').style.display = 'block';
-                    const phaseDiv = document.getElementById('asmbs-' + bariatric);
-                    if (phaseDiv) phaseDiv.style.display = 'block';
-                } else if (org === 'and') {
-                    // Show AND only
-                    document.getElementById('guidelines-and').style.display = 'block';
-                    const phaseDiv = document.getElementById('and-' + bariatric);
-                    if (phaseDiv) phaseDiv.style.display = 'block';
-                }
-            }
-        }
-        
-        function updateBariatricCalculation() {
-            // Re-run toggleBariatric to update which view is shown
-            toggleBariatric();
-        }
-        
-        // Toggle between imperial and metric
+        /**
+         * Toggle between imperial and metric input fields
+         * Saves preference to localStorage for future visits
+         */
         function toggleUnits() {
             const unit = document.querySelector('input[name="unit"]:checked').value;
             localStorage.setItem('unitPreference', unit);
@@ -882,18 +1045,103 @@
             }
         }
         
+        // =====================================================
+        // BARIATRIC SURGERY GUIDELINES
+        // =====================================================
+        
+        /**
+         * Toggle bariatric guideline visibility based on surgery phase selection
+         * Shows/hides organization selector and switches between:
+         * - Comparison view (both ASMBS + AND guidelines)
+         * - ASMBS-only detailed view
+         * - AND-only detailed view
+         * 
+         * Called when bariatric surgery status dropdown changes
+         */
+        function toggleBariatric() {
+            const bariatric = document.getElementById('bariatric').value;
+            const note = document.getElementById('bariatric-note');
+            const guidelines = document.getElementById('bariatric-guidelines');
+            const orgGroup = document.getElementById('bariatric-organization-group');
+            const org = document.getElementById('bariatric-org').value;
+            
+            // Reset: Hide all phase-specific content and organization views
+            document.querySelectorAll('.guideline-phase').forEach(el => el.style.display = 'none');
+            document.getElementById('guidelines-comparison').style.display = 'none';
+            document.getElementById('guidelines-asmbs').style.display = 'none';
+            document.getElementById('guidelines-and').style.display = 'none';
+            
+            if (bariatric === 'none') {
+                // No bariatric surgery: hide all bariatric-related elements
+                note.style.display = 'none';
+                guidelines.style.display = 'none';
+                orgGroup.style.display = 'none';
+            } else {
+                // Bariatric surgery selected: show note and guideline panel
+                note.style.display = 'block';
+                guidelines.style.display = 'block';
+                orgGroup.style.display = 'block';
+                
+                // Determine which view to show based on organization selection
+                if (org === '' || org === null) {
+                    // COMPARISON VIEW: Show both organizations side-by-side
+                    document.getElementById('guidelines-comparison').style.display = 'block';
+                    const phaseDiv = document.getElementById('comp-' + bariatric);
+                    if (phaseDiv) phaseDiv.style.display = 'block';
+                } else if (org === 'asmbs') {
+                    // ASMBS DETAIL VIEW: Show only ASMBS guidelines with full details
+                    document.getElementById('guidelines-asmbs').style.display = 'block';
+                    const phaseDiv = document.getElementById('asmbs-' + bariatric);
+                    if (phaseDiv) phaseDiv.style.display = 'block';
+                } else if (org === 'and') {
+                    // AND DETAIL VIEW: Show only AND guidelines with full details
+                    document.getElementById('guidelines-and').style.display = 'block';
+                    const phaseDiv = document.getElementById('and-' + bariatric);
+                    if (phaseDiv) phaseDiv.style.display = 'block';
+                }
+            }
+        }
+        
+        /**
+         * Update bariatric calculation when organization selection changes
+         * Simply re-runs toggleBariatric to switch between comparison/detail views
+         * Called when organization dropdown changes
+         */
+        function updateBariatricCalculation() {
+            toggleBariatric();
+        }
+        
+        /**
+         * ===========================================
+         * CALORIE CALCULATION ENGINE
+         * ===========================================
+         * 
+         * Calculates BMR, TDEE, target calories, macros, and BMI
+         * Applies bariatric surgery adjustments when selected
+         * 
+         * Uses Mifflin-St Jeor equation (most accurate for general population)
+         * BMR Formulas:
+         *   Men: (10 × weight) + (6.25 × height) - (5 × age) + 5
+         *   Women: (10 × weight) + (6.25 × height) - (5 × age) - 161
+         */
         function calculateCalories() {
-            // Auto-select ASMBS if bariatric is selected but no org chosen
+            // =====================================================
+            // AUTO-SELECT BARIATRIC ORGANIZATION
+            // If user selects bariatric phase but doesn't choose org,
+            // default to ASMBS and update the guidelines display
+            // =====================================================
             const bariatricPhase = document.getElementById('bariatric').value;
             const bariatricOrg = document.getElementById('bariatric-org');
             if (bariatricPhase !== 'none' && bariatricOrg && bariatricOrg.value === '') {
                 bariatricOrg.value = 'asmbs';
-                // Trigger the change to update the guidelines display
                 if (typeof updateBariatricCalculation === 'function') {
                     updateBariatricCalculation();
                 }
             }
 
+            // =====================================================
+            // COLLECT INPUT VALUES
+            // =====================================================
             const gender = document.querySelector('input[name="gender"]:checked').value;
             const age = parseFloat(document.getElementById('age').value) || 0;
             const unit = document.querySelector('input[name="unit"]:checked').value;
@@ -902,6 +1150,10 @@
             
             let weightKg, heightCm;
             
+            // =====================================================
+            // CONVERT TO METRIC (kg, cm) FOR CALCULATIONS
+            // Validate inputs before proceeding
+            // =====================================================
             if (unit === 'imperial') {
                 const weightLbs = parseFloat(document.getElementById('weight-lbs').value) || 0;
                 const heightFt = parseFloat(document.getElementById('height-ft').value) || 0;
@@ -924,7 +1176,10 @@
                 }
             }
 
-            // Calculate BMR using Mifflin-St Jeor
+            // =====================================================
+            // CALCULATE BMR (Basal Metabolic Rate)
+            // Using Mifflin-St Jeor equation
+            // =====================================================
             let bmr;
             if (gender === 'male') {
                 bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * age) + 5;
@@ -932,38 +1187,51 @@
                 bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * age) - 161;
             }
 
+            // Calculate TDEE (Total Daily Energy Expenditure)
             const tdee = bmr * activity;
 
-            // Bariatric surgery adjustments
+            // =====================================================
+            // BARIATRIC SURGERY ADJUSTMENTS
+            // Adjust calories and protein based on surgery phase
+            // =====================================================
             const bariatric = document.getElementById('bariatric').value;
             let bariatricMultiplier = 1;
             let proteinMultiplier = 0.30;
             let timelineExtra = '';
             
             if (bariatric === 'recent') {
-                bariatricMultiplier = 0.6; // 40% reduction
-                proteinMultiplier = 0.45; // 45% protein
+                // 0-6 months post-surgery: Significant calorie reduction, high protein
+                bariatricMultiplier = 0.6;   // 40% calorie reduction
+                proteinMultiplier = 0.45;    // 45% protein (prioritize healing)
                 timelineExtra = ' As a recent bariatric surgery patient, focus on protein first, then vegetables. Avoid sugar and high-fat foods.';
             } else if (bariatric === 'recovery') {
-                bariatricMultiplier = 0.75; // 25% reduction
-                proteinMultiplier = 0.40; // 40% protein
+                // 6-12 months: Moderate reduction, still high protein
+                bariatricMultiplier = 0.75;    // 25% calorie reduction
+                proteinMultiplier = 0.40;    // 40% protein
                 timelineExtra = ' During recovery, prioritize protein at every meal and stay hydrated.';
             } else if (bariatric === 'longterm') {
-                bariatricMultiplier = 0.9; // 10% reduction
-                proteinMultiplier = 0.35; // 35% protein
+                // 1+ years: Minimal reduction, standard high protein
+                bariatricMultiplier = 0.9;     // 10% calorie reduction
+                proteinMultiplier = 0.35;    // 35% protein
                 timelineExtra = ' Long-term success requires consistent protein intake and portion control.';
             }
 
-            // Calculate target based on goal
+            // =====================================================
+            // CALCULATE TARGET CALORIES BASED ON GOAL
+            // =====================================================
             let targetCalories;
             let timelineText;
+            
             if (goal === 'lose') {
+                // 500 calorie deficit = ~1 lb/week weight loss
                 targetCalories = (tdee - 500) * bariatricMultiplier;
                 timelineText = 'At this rate, you\'ll lose approximately 1 lb per week.' + timelineExtra;
             } else if (goal === 'gain') {
+                // 500 calorie surplus = ~1 lb/week muscle gain (with training)
                 targetCalories = (tdee + 500) * bariatricMultiplier;
                 timelineText = 'At this rate, you\'ll gain approximately 1 lb per week. Focus on resistance training.' + timelineExtra;
             } else {
+                // Maintain current weight
                 targetCalories = tdee * bariatricMultiplier;
                 timelineText = 'This is your maintenance level.' + timelineExtra;
             }
@@ -979,10 +1247,41 @@
             const fatCal = remainingCal * 0.5;
 
             const proteinG = Math.round(proteinCal / 4);
+            // =====================================================
+            // CALCULATE MACROS (Protein, Carbs, Fat)
+            // =====================================================
+            // Standard macro split: 30% protein, 40% carbs, 30% fat
+            // Bariatric patients get higher protein (35-45%)
+            
+            // Calculate protein grams based on body weight
+            // Standard: 0.8g per kg (RDA) to 1.2g per kg (athletes)
+            // Bariatric: 1.5-2.0g per kg (prioritize lean mass preservation)
+            const proteinG = Math.round(weightKg * (bariatric !== 'none' ? 1.5 : 1.2));
+            
+            // Remaining calories for carbs and fat
+            const proteinCal = proteinG * 4;
+            const remainingCal = targetCalories - proteinCal;
+            
+            // Split remaining between carbs and fat
+            // Adjust ratio based on bariatric phase (more protein = less from others)
+            const carbsRatio = bariatric !== 'none' ? 0.35 : 0.40;  // 35-40% carbs
+            const fatRatio = bariatric !== 'none' ? 0.25 : 0.30;    // 25-30% fat
+            
+            const carbsCal = remainingCal * carbsRatio;
+            const fatCal = remainingCal * fatRatio;
+            
+            // Convert calories to grams (protein=4cal/g, carbs=4cal/g, fat=9cal/g)
             const carbsG = Math.round(carbsCal / 4);
             const fatG = Math.round(fatCal / 9);
 
-            // Display results
+            // Calculate BMI (Body Mass Index)
+            const heightM = heightCm / 100;
+            const bmi = weightKg / (heightM * heightM);
+
+            // =====================================================
+            // DISPLAY RESULTS
+            // Update DOM elements with calculated values
+            // =====================================================
             document.getElementById('target-calories').textContent = Math.round(targetCalories).toLocaleString();
             document.getElementById('bmr').textContent = Math.round(bmr).toLocaleString();
             document.getElementById('tdee').textContent = Math.round(tdee).toLocaleString();
@@ -992,11 +1291,15 @@
             document.getElementById('fat').textContent = fatG + 'g';
             document.getElementById('timeline-text').textContent = timelineText;
 
+            // Show results panel and scroll to it
             document.getElementById('results').classList.add('show');
             document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
-        // Allow Enter key
+        // =====================================================
+        // KEYBOARD SHORTCUTS
+        // =====================================================
+        // Allow Enter key to trigger calculation from any input field
         document.querySelectorAll('input').forEach(input => {
             input.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') calculateCalories();
