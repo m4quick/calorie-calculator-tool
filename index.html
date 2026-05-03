@@ -1129,57 +1129,70 @@
 
             /**
              * Bariatric surgery adjustments by phase:
-             * - Recent (0-6 mo): 40% fewer calories, 45% from protein
-             * - Recovery (6-12 mo): 25% fewer calories, 40% from protein  
-             * - Long-term (1+ yr): 10% fewer calories, 35% from protein
+             * - Recent (0-6 mo): 800-1200 calories, 60-100g protein
+             * - Recovery (6-12 mo): 1000-1400 calories, 60-100g protein  
+             * - Long-term (1+ yr): 1200-1800 calories, 60-100g protein
              */
             const bariatric = document.getElementById('bariatric').value;
-            let bariatricMultiplier = 1;
-            let proteinMultiplier = 0.30;
+            let targetCalories;
+            let proteinG;
             let timelineExtra = '';
             
             if (bariatric === 'recent') {
-                bariatricMultiplier = 0.6; // 40% reduction
-                proteinMultiplier = 0.45; // 45% protein
-                timelineExtra = ' As a recent bariatric surgery patient, focus on protein first, then vegetables. Avoid sugar and high-fat foods.';
+                // Recent surgery: 800-1200 calories based on gender/size
+                targetCalories = gender === 'male' ? 1000 : 900;
+                proteinG = gender === 'male' ? 80 : 65;
+                timelineExtra = ' As a recent bariatric surgery patient (0-6 months), your calorie target is 800-1200/day with 60-80g protein (women) or 80-100g (men). Focus on protein first, then vegetables. Avoid sugar and high-fat foods.';
             } else if (bariatric === 'recovery') {
-                bariatricMultiplier = 0.75; // 25% reduction
-                proteinMultiplier = 0.40; // 40% protein
-                timelineExtra = ' During recovery, prioritize protein at every meal and stay hydrated.';
+                // Recovery phase: 1000-1400 calories
+                targetCalories = gender === 'male' ? 1200 : 1100;
+                proteinG = gender === 'male' ? 90 : 70;
+                timelineExtra = ' During recovery (6-12 months), your calorie target is 1000-1400/day with 60-80g protein (women) or 80-100g (men). Prioritize protein at every meal and stay hydrated.';
             } else if (bariatric === 'longterm') {
-                bariatricMultiplier = 0.9; // 10% reduction
-                proteinMultiplier = 0.35; // 35% protein
-                timelineExtra = ' Long-term success requires consistent protein intake and portion control.';
-            }
-
-            // Calculate target calories based on goal
-            let targetCalories;
-            let timelineText;
-            if (goal === 'lose') {
-                targetCalories = (tdee - 500) * bariatricMultiplier; // 500 cal deficit = 1 lb/week
-                timelineText = 'At this rate, you\'ll lose approximately 1 lb per week.' + timelineExtra;
-            } else if (goal === 'gain') {
-                targetCalories = (tdee + 500) * bariatricMultiplier; // 500 cal surplus = 1 lb/week
-                timelineText = 'At this rate, you\'ll gain approximately 1 lb per week. Focus on resistance training.' + timelineExtra;
+                // Long-term: 1200-1800 calories (maintenance)
+                targetCalories = gender === 'male' ? 1500 : 1300;
+                proteinG = gender === 'male' ? 80 : 65;
+                timelineExtra = ' Long-term maintenance (1+ years) requires 1200-1800 calories/day with 60-80g protein (women) or 80-100g (men). Consistent protein intake and portion control are key.';
             } else {
-                targetCalories = tdee * bariatricMultiplier;
-                timelineText = 'This is your maintenance level.' + timelineExtra;
+                // No bariatric surgery - use standard calculations
+                if (goal === 'lose') {
+                    targetCalories = tdee - 500; // 500 cal deficit = 1 lb/week
+                } else if (goal === 'gain') {
+                    targetCalories = tdee + 500; // 500 cal surplus = 1 lb/week
+                } else {
+                    targetCalories = tdee;
+                }
+                
+                // Calculate macros: 30% protein, 35% carbs, 35% fat
+                const proteinCal = targetCalories * 0.30;
+                proteinG = Math.round(proteinCal / 4);
             }
 
             // Calculate BMI (Body Mass Index)
             const heightM = heightCm / 100;
             const bmi = weightKg / (heightM * heightM);
 
-            // Calculate macros: protein first, then split remaining between carbs/fat
-            const proteinCal = targetCalories * proteinMultiplier;
+            // Calculate remaining macros based on target calories and protein
+            const proteinCal = proteinG * 4;
             const remainingCal = targetCalories - proteinCal;
-            const carbsCal = remainingCal * 0.5;
-            const fatCal = remainingCal * 0.5;
+            const carbsCal = remainingCal * 0.55; // 55% of remaining to carbs
+            const fatCal = remainingCal * 0.45;  // 45% of remaining to fat
 
-            // Convert calories to grams (protein/carbs = 4 cal/g, fat = 9 cal/g)
-            const proteinG = Math.round(proteinCal / 4);
+            // Convert calories to grams (carbs = 4 cal/g, fat = 9 cal/g)
             const carbsG = Math.round(carbsCal / 4);
             const fatG = Math.round(fatCal / 9);
+
+            // Set timeline text based on goal or bariatric status
+            let timelineText;
+            if (bariatric !== 'none') {
+                timelineText = timelineExtra;
+            } else if (goal === 'lose') {
+                timelineText = 'At this rate, you\'ll lose approximately 1 lb per week.';
+            } else if (goal === 'gain') {
+                timelineText = 'At this rate, you\'ll gain approximately 1 lb per week. Focus on resistance training.';
+            } else {
+                timelineText = 'This is your maintenance level.';
+            }
 
             // Display results in the UI
             document.getElementById('target-calories').textContent = Math.round(targetCalories).toLocaleString();
