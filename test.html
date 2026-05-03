@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head><title>Test</title></head>
+<body>
+    <p>Open browser console (F12) to see messages</p>
+    <button onclick="testCalc()">Test Calculate</button>
+    <div id="results" style="display:none; margin-top:20px; padding:20px; background:#eee;">
+        <h2>Results would appear here</h2>
+    </div>
+    
+    <script>
+        function testCalc() {
+            console.log('testCalc clicked');
+            alert('Button works!');
+            document.getElementById('results').style.display = 'block';
+        }
+        
+        // Check if there are any global errors
+        window.onerror = function(msg, url, line) {
+            console.error('Global error:', msg, 'at line', line);
+            alert('Error: ' + msg + ' at line ' + line);
+        };
+    </script>
+</body>
+</html>

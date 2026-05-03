@@ -1,0 +1,24 @@
+{
+  "name": "calorie-calculator-tool",
+  "version": "1.0.0",
+  "description": "Daily Calorie Needs & BMR Calculator - Privacy-focused health tool.",
+  "main": "multi-browser-test.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/m4quick/calorie-calculator-tool.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/m4quick/calorie-calculator-tool/issues"
+  },
+  "homepage": "https://github.com/m4quick/calorie-calculator-tool#readme",
+  "dependencies": {
+    "playwright": "^1.59.1"
+  }
+}
