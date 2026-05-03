@@ -1,0 +1,64 @@
+name: Static Code Analysis
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+    
+    - name: Install ESLint
+      run: npm install -g eslint
+    
+    - name: Run ESLint on JavaScript
+      run: |
+        # Extract inline JavaScript from HTML for analysis
+        node -e "
+        const fs = require('fs');
+        const html = fs.readFileSync('index.html', 'utf8');
+        const scriptMatch = html.match(/<script>([\\s\\S]*?)<\\/script>/g);
+        if (scriptMatch) {
+          scriptMatch.forEach((match, i) => {
+            const js = match.replace(/<script>/, '').replace(/<\\/script>/, '');
+            fs.writeFileSync(\`script-\${i}.js\`, js);
+          });
+        }
+        "
+        eslint script-*.js --ext .js || true
+    
+    - name: HTML Validation
+      run: |
+        npm install -g htmlhint
+        htmlhint index.html || true
+    
+    - name: CSS Validation
+      run: |
+        npm install -g stylelint stylelint-config-standard
+        echo '{"extends": "stylelint-config-standard"}' > .stylelintrc.json
+        stylelint '**/*.html' --ignore-pattern 'node_modules/**' || true
+    
+    - name: Security Scan with Semgrep
+      uses: returntocorp/semgrep-action@v1
+      with:
+        config: >-
+          p/security-audit
+          p/owasp-top-ten
+          p/cwe-top-25
+        generateSarif: "1"
+    
+    - name: Upload SARIF results
+      uses: github/codeql-action/upload-sarif@v3
+      if: always()
+      with:
+        sarif_file: semgrep.sarif
