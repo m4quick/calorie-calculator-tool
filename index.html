@@ -924,20 +924,156 @@
     </div>
 
     
-
-        <!-- Government Health Resources -->
-        <div class="content-section" style="background: #f8f9fa;">
-            <h2 style="text-align: center;">Government Health Resources</h2>
-            <p>Trusted health information from U.S. government agencies:</p>
-            <ul>
-                <li><a href="https://www.nutrition.gov" target="_blank" rel="noopener">Nutrition.gov</a> - USDA nutrition portal</li>
-                <li><a href="https://www.myplate.gov" target="_blank" rel="noopener">MyPlate.gov</a> - Eating plans and guidelines</li>
-                <li><a href="https://www.cdc.gov/healthy-weight-growth" target="_blank" rel="noopener">CDC Healthy Weight</a> - Weight management strategies</li>
-                <li><a href="https://odphp.health.gov/our-work/nutrition-physical-activity/physical-activity-guidelines" target="_blank" rel="noopener">Physical Activity Guidelines</a></li>
-                <li><a href="https://www.usa.gov/state-health" target="_blank" rel="noopener">State Health Departments</a> - Find local resources</li>
-            </ul>
-            <p style="margin-top: 15px; font-size: 0.9em; color: #666;"><em>For personalized advice, consult your healthcare provider.</em></p>
+        <!-- International Government Health Resources -->
+        <style>
+        .resources-container { max-width: 900px; margin: 30px auto; }
+        .resources-header { text-align: center; margin-bottom: 20px; }
+        .resources-header h2 { color: #333; margin-bottom: 10px; }
+        .country-accordion { border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .country-section { border-bottom: 1px solid #e0e0e0; }
+        .country-header { background: #f8f9fa; padding: 15px 20px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; }
+        .country-header:hover { background: #e9ecef; }
+        .country-title { display: flex; align-items: center; gap: 10px; font-weight: 600; }
+        .country-flag { font-size: 1.5em; }
+        .country-content { max-height: 0; overflow: hidden; transition: max-height 0.3s; background: white; }
+        .country-content.open { max-height: 800px; }
+        .resource-category { padding: 15px 20px; border-bottom: 1px solid #f0f0f0; }
+        .resource-category h4 { color: #667eea; margin-bottom: 10px; font-size: 0.95em; }
+        .resource-list { list-style: none; padding: 0; margin: 0; }
+        .resource-list li { padding: 6px 0; border-bottom: 1px solid #f5f5f5; font-size: 0.9em; }
+        .resource-list li:last-child { border-bottom: none; }
+        .resource-list a { color: #667eea; text-decoration: none; }
+        .resource-list a:hover { text-decoration: underline; }
+        .disclaimer { margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; font-size: 0.85em; color: #666; text-align: center; }
+        @media (max-width: 600px) { .country-header { padding: 12px 15px; } .resource-category { padding: 12px 15px; } }
+        </style>
+        
+        <div class="resources-container">
+            <div class="resources-header">
+                <h2>🌍 Government Health Resources by Country</h2>
+            </div>
+            
+            <div class="country-accordion">
+                <div class="country-section">
+                    <div class="country-header" onclick="toggleResources(this)">
+                        <div class="country-title"><span class="country-flag">🇺🇸</span><span>United States</span></div>
+                        <span>▼</span>
+                    </div>
+                    <div class="country-content">
+                        <div class="resource-category">
+                            <h4>🍎 Nutrition</h4>
+                            <ul class="resource-list">
+                                <li><a href="https://www.nutrition.gov" target="_blank">Nutrition.gov</a> - USDA nutrition portal</li>
+                                <li><a href="https://www.myplate.gov" target="_blank">MyPlate.gov</a> - Eating plans</li>
+                                <li><a href="https://www.dietaryguidelines.gov" target="_blank">Dietary Guidelines</a></li>
+                            </ul>
+                        </div>
+                        <div class="resource-category">
+                            <h4>🏃 Physical Activity</h4>
+                            <ul class="resource-list">
+                                <li><a href="https://odphp.health.gov/our-work/nutrition-physical-activity/physical-activity-guidelines" target="_blank">Physical Activity Guidelines</a></li>
+                                <li><a href="https://www.cdc.gov/physical-activity-basics" target="_blank">CDC Physical Activity</a></li>
+                            </ul>
+                        </div>
+                        <div class="resource-category">
+                            <h4>🏥 State Health Departments</h4>
+                            <ul class="resource-list">
+                                <li><a href="https://www.usa.gov/state-health" target="_blank">USA.gov State Health Directory</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="country-section">
+                    <div class="country-header" onclick="toggleResources(this)">
+                        <div class="country-title"><span class="country-flag">🇬🇧</span><span>United Kingdom</span></div>
+                        <span>▼</span>
+                    </div>
+                    <div class="country-content">
+                        <div class="resource-category">
+                            <h4>🍎 Nutrition</h4>
+                            <ul class="resource-list">
+                                <li><a href="https://www.nhs.uk/live-well/eat-well/the-eatwell-guide" target="_blank">The Eatwell Guide</a> - NHS recommendations</li>
+                                <li><a href="https://www.gov.uk/government/publications/the-eatwell-guide" target="_blank">GOV.UK Eatwell Guide</a></li>
+                            </ul>
+                        </div>
+                        <div class="resource-category">
+                            <h4>🏃 Physical Activity</h4>
+                            <ul class="resource-list">
+                                <li><a href="https://www.nhs.uk/live-well/exercise/physical-activity-guidelines-for-adults-aged-19-to-64" target="_blank">Physical Activity Guidelines</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="country-section">
+                    <div class="country-header" onclick="toggleResources(this)">
+                        <div class="country-title"><span class="country-flag">🇨🇦</span><span>Canada</span></div>
+                        <span>▼</span>
+                    </div>
+                    <div class="country-content">
+                        <div class="resource-category">
+                            <h4>🍎 Nutrition</h4>
+                            <ul class="resource-list">
+                                <li><a href="https://food-guide.canada.ca" target="_blank">Canada's Food Guide</a></li>
+                                <li><a href="https://food-guide.canada.ca/en/tips-for-healthy-eating/adults" target="_blank">Healthy Eating for Adults</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="country-section">
+                    <div class="country-header" onclick="toggleResources(this)">
+                        <div class="country-title"><span class="country-flag">🇦🇺</span><span>Australia</span></div>
+                        <span>▼</span>
+                    </div>
+                    <div class="country-content">
+                        <div class="resource-category">
+                            <h4>🍎 Nutrition</h4>
+                            <ul class="resource-list">
+                                <li><a href="https://www.eatforhealth.gov.au" target="_blank">Eat For Health</a> - Australian dietary guidelines</li>
+                                <li><a href="https://www.eatforhealth.gov.au/guidelines/australian-guide-healthy-eating" target="_blank">Australian Guide to Healthy Eating</a></li>
+                            </ul>
+                        </div>
+                        <div class="resource-category">
+                            <h4>🏃 Physical Activity</h4>
+                            <ul class="resource-list">
+                                <li><a href="https://www.health.gov.au/topics/physical-activity-and-exercise/physical-activity-and-exercise-guidelines-for-all-australians" target="_blank">Physical Activity Guidelines</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="country-section">
+                    <div class="country-header" onclick="toggleResources(this)">
+                        <div class="country-title"><span class="country-flag">🌐</span><span>Global (WHO)</span></div>
+                        <span>▼</span>
+                    </div>
+                    <div class="country-content">
+                        <div class="resource-category">
+                            <h4>🌍 World Health Organization</h4>
+                            <ul class="resource-list">
+                                <li><a href="https://www.who.int/health-topics/nutrition" target="_blank">WHO Nutrition</a></li>
+                                <li><a href="https://www.who.int/health-topics/physical-activity" target="_blank">WHO Physical Activity</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="disclaimer">
+                <strong>Disclaimer:</strong> These are official government health resources. Consult your local healthcare provider for personalized advice.
+            </div>
         </div>
+        
+        <script>
+        function toggleResources(header) {
+            const content = header.nextElementSibling;
+            const isOpen = content.classList.contains('open');
+            document.querySelectorAll('.country-content').forEach(c => { c.classList.remove('open'); c.style.maxHeight = null; });
+            if (!isOpen) { content.classList.add('open'); content.style.maxHeight = content.scrollHeight + "px"; }
+        }
+        </script>
 
     <footer>
         <div class="container">
