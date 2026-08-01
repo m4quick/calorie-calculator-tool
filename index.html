@@ -98,6 +98,29 @@
         }
         header h1 { font-size: 2.5em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
         header p { font-size: 1.2em; opacity: 0.9; }
+        /* sitewide navigation — matches the other content pages */
+        .nav-links { display: flex; justify-content: center; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
+        .nav-links a {
+            color: white; text-decoration: none; padding: 10px 18px;
+            border: 2px solid rgba(255,255,255,0.3); border-radius: 30px;
+            transition: all 0.3s; font-size: 0.93em;
+        }
+        .nav-links a:hover { background: rgba(255,255,255,0.2); border-color: white; }
+        .nav-links a.here { background: rgba(255,255,255,0.22); border-color: white; font-weight: 600; }
+        @media (max-width: 600px) {
+            .nav-links { gap: 9px; }
+            .nav-links a { padding: 8px 14px; font-size: 0.86em; }
+        }
+        /* guide cards linking to the deeper pages */
+        .guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 18px; margin-top: 20px; }
+        .guide-card {
+            display: block; background: #f8f9fa; border-radius: 12px; padding: 22px;
+            text-decoration: none; color: inherit; transition: transform .2s, box-shadow .2s;
+        }
+        .guide-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+        .guide-card h3 { color: #667eea; margin-bottom: 8px; font-size: 1.08em; }
+        .guide-card p { color: #666; font-size: 0.92em; margin: 0; }
+        .guide-card .more { display: inline-block; margin-top: 10px; color: #667eea; font-weight: 600; font-size: 0.88em; }
         .calculator-box {
             background: white;
             padding: 40px;
@@ -508,6 +531,14 @@
         <div class="container">
             <h1>Calorie Calculator</h1>
             <p>Calculate your daily calorie needs, BMR, and TDEE</p>
+            <div class="nav-links">
+                <a href="/" class="here">Calculator</a>
+                <a href="/how-calories-work.html">How It Works</a>
+                <a href="/bariatric-nutrition.html">Bariatric Nutrition</a>
+                <a href="/glp1-protein.html">GLP-1 Protein</a>
+                <a href="/faq.html">FAQ</a>
+                <a href="/about.html">About</a>
+            </div>
         </div>
     </header>
 
@@ -920,6 +951,34 @@
                 <div class="faq-question">How many calories should I eat to lose weight?</div>
                 <div class="faq-answer">To lose 1 pound per week, subtract 500 calories from your TDEE (maintenance calories). For 2 pounds per week, subtract 1000 calories. Never go below 1200 calories/day for women or 1500 for men without medical supervision.</div>
             </div>
+            <p style="margin-top:18px;"><a href="/faq.html" style="color:#667eea;font-weight:600;">Read all frequently asked questions →</a></p>
+        </div>
+
+        <div class="content-section">
+            <h2>Guides</h2>
+            <p>The calculator gives you a number. These explain what to do with it.</p>
+            <div class="guide-grid">
+                <a class="guide-card" href="/how-calories-work.html">
+                    <h3>How calorie needs are calculated</h3>
+                    <p>BMR, the Mifflin-St Jeor equation, activity multipliers, TDEE, and why weight loss slows down over time.</p>
+                    <span class="more">Read the guide →</span>
+                </a>
+                <a class="guide-card" href="/bariatric-nutrition.html">
+                    <h3>Bariatric nutrition by phase</h3>
+                    <p>Calorie and protein targets after bypass or sleeve surgery, with ASMBS and Academy of Nutrition and Dietetics guidance compared.</p>
+                    <span class="more">Read the guide →</span>
+                </a>
+                <a class="guide-card" href="/glp1-protein.html">
+                    <h3>Protein on GLP-1 medications</h3>
+                    <p>Hitting a protein target on an appetite that has halved, and the options that work when solid food does not.</p>
+                    <span class="more">Read the guide →</span>
+                </a>
+                <a class="guide-card" href="/faq.html">
+                    <h3>Frequently asked questions</h3>
+                    <p>TDEE, formula accuracy, minimum safe intake, plateaus, and why the calculator asks for height and age.</p>
+                    <span class="more">Browse the FAQ →</span>
+                </a>
+            </div>
         </div>
     </div>
 
@@ -1078,9 +1137,16 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2026 Calorie Calculator. Free nutrition tool.</p>
-            <p><a href="glp1-protein.html">🎯 GLP-1 Protein Calculator</a> | <a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a> | <a href="#">Contact</a></p>
-            <p style="font-size: 0.9em; margin-top: 10px; opacity: 0.7;">Disclaimer: Consult a healthcare provider before starting any diet or exercise program.</p>
+            <p>&copy; 2026 Calorie Calculator · Published by M4Quick Studios LLC</p>
+            <p style="margin-top: 12px;">
+                <a href="/about.html">About</a> |
+                <a href="/contact.html">Contact</a> |
+                <a href="/privacy.html">Privacy Policy</a> |
+                <a href="/cookies.html">Cookies</a> |
+                <a href="/terms.html">Terms of Use</a>
+            </p>
+            <p style="font-size: 0.85em; margin-top: 16px; opacity: 0.85; max-width: 760px; margin-left: auto; margin-right: auto; line-height: 1.7;"><strong>Medical disclaimer:</strong> This site publishes general educational information only and does not provide medical advice, diagnosis or treatment. Nutrition content is reviewed by our staff dietitian. Always consult a healthcare provider before starting any diet or exercise program.</p>
+            <p style="font-size: 0.85em; margin-top: 10px; opacity: 0.85; max-width: 760px; margin-left: auto; margin-right: auto; line-height: 1.7;"><strong>Affiliate disclosure:</strong> Some links on this site are Amazon affiliate links. If you buy through one we may earn a small commission at no additional cost to you. This never affects what we recommend.</p>
         </div>
     </footer>
 
