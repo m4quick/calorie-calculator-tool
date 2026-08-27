@@ -3,7 +3,7 @@
 ## Current Implementation (as of 2026-05-02 00:14)
 
 ### Location
-`/Users/mirzaie/.openclaw/workspace/calculator-sites/calorie-calculator-tool/index.html`
+`/Users/anu-sir/.openclaw/workspace/calculator-sites/calorie-calculator-tool/index.html`
 
 ### Components Added
 

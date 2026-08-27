@@ -3,7 +3,7 @@
 **Site:** https://calorie-calculator-tool.pages.dev
 **Test Date:** May 2, 2026 at 3:48 PM EDT
 **Test Runner:** Playwright v1.59.1
-**Location:** `/Users/mirzaie/.openclaw/workspace/calculator-sites/calorie-calculator-tool/`
+**Location:** `/Users/anu-sir/.openclaw/workspace/calculator-sites/calorie-calculator-tool/`
 
 ---
 
@@ -217,7 +217,7 @@
 | `webkit-iphone12-mobile.png` | iPhone 12 emulation (Mobile Safari) |
 | `chromium-pixel5-mobile.png` | Pixel 5 emulation (Chrome Mobile) |
 
-**Location:** `/Users/mirzaie/.openclaw/workspace/calculator-sites/calorie-calculator-tool/test-results/screenshots/`
+**Location:** `/Users/anu-sir/.openclaw/workspace/calculator-sites/calorie-calculator-tool/test-results/screenshots/`
 
 ---
 
