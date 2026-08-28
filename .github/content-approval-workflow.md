@@ -27,4 +27,4 @@ Automated content updates with human approval via Gitea.
 - Protein targets based on new research
 
 ## Gitea URL
-http://10.0.0.254:3000/anu-sir/calorie-calculator-tool
+(internal Gitea — see the `origin` remote in your local clone; the address is deliberately not recorded here, as this repo is public)
