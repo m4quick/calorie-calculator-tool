@@ -400,6 +400,15 @@
             gap: 15px;
             margin: 20px 0;
         }
+        .np-row { display:flex; align-items:center; gap:12px; padding:11px 0; border-bottom:1px solid #f0f0f0; }
+        .np-row:last-child { border-bottom:none; }
+        .np-name { flex:1 1 auto; font-size:14px; color:#333; font-weight:600; text-align:left; }
+        .np-sub  { font-size:12px; color:#888; font-weight:400; display:block; margin-top:2px; }
+        .np-pct  { flex:0 0 auto; font-size:13px; font-weight:700; color:#4caf50; background:#edf7ee;
+                   border-radius:6px; padding:4px 9px; white-space:nowrap; }
+        .np-buy  { flex:0 0 auto; font-size:12.5px; font-weight:600; color:#667eea; text-decoration:none; white-space:nowrap; }
+        .np-buy:hover { text-decoration:underline; }
+        @media (max-width:560px) { .np-row { flex-wrap:wrap; gap:8px; } .np-name { flex:1 1 100%; } }
         .result-card {
             background: white;
             padding: 20px;
@@ -871,6 +880,18 @@
                 
                 <div id="bariatric-indicator" style="display: none; margin: 15px 0; padding: 12px; background: #fff3e0; border-radius: 8px; border-left: 4px solid #ff9800; font-size: 14px;"></div>
                 
+                <div id="nutrient-products" style="display:none; margin:18px 0; padding:18px; background:#fff; border-radius:12px; border:1px solid #e0e0e0;">
+                    <div id="np-heading" style="font-weight:700; color:#333; margin-bottom:4px;"></div>
+                    <p id="np-context" style="font-size:12.5px; color:#666; margin:0 0 6px; line-height:1.6;"></p>
+                    <p style="font-size:12px; color:#888; margin:0 0 14px; line-height:1.55;">
+                        <strong>Affiliate disclosure:</strong> these are Amazon affiliate links &mdash; we may earn a small
+                        commission at no extra cost to you. It never changes what we list.
+                    </p>
+                    <div id="np-list"></div>
+                    <p id="np-budget" style="font-size:12.5px; color:#555; margin:12px 0 0; padding-top:12px; border-top:1px solid #eee;"></p>
+                    <p id="np-caveat" style="font-size:12px; color:#8a6a12; background:#fff8e6; border:1px solid #e8b93b; border-radius:8px; padding:10px 12px; margin:12px 0 0; line-height:1.55; display:none;"></p>
+                </div>
+
                 <div class="result-grid">
                     <div class="result-card">
                         <div class="result-value" id="bmr">0</div>
@@ -1299,6 +1320,101 @@
          * 
          * Applies bariatric surgery adjustments based on selected phase.
          */
+
+        /* ---------------------------------------------------------------
+         * Nutrient products, shown against the target the calculator just
+         * produced. Phase-aware because the need genuinely differs: a recent
+         * post-op patient is asked for 60-100 g of protein inside an 800-1200
+         * calorie budget with severely limited volume, which is close to
+         * impossible from food alone -- both ASMBS and AND expect most early
+         * protein to come from supplements. A long-term patient has the
+         * opposite problem and should be eating food first.
+         *
+         * Protein and calorie figures are approximate and vary by flavour;
+         * always check the label on what you actually buy.
+         * ------------------------------------------------------------- */
+        const NUTRIENT_PRODUCTS = [
+            { name: 'Premier Protein shake', serving: '11.5 oz, ready to drink', g: 30, kcal: 160, asin: 'B08P5K4PG6', liquid: true },
+            { name: 'Fairlife Core Power',   serving: '14 oz, ready to drink',   g: 26, kcal: 170, asin: 'B07CJBW1S7', liquid: true },
+            { name: 'Whey protein powder',   serving: '1 scoop, mix to taste',   g: 25, kcal: 120, asin: 'B000QSNYGI', liquid: true },
+            { name: 'Quest protein bar',     serving: '1 bar, solid food',       g: 20, kcal: 190, asin: 'B07DJ3KGMV', liquid: false },
+        ];
+
+        const NP_PHASES = {
+            recent: {
+                heading: 'Hitting {P} g of protein on {C} calories',
+                context: 'In the first six months, volume is the binding constraint and textures progress from liquids to pureed to soft. ' +
+                         'Guidance from ASMBS and the Academy of Nutrition and Dietetics expects <strong>most early protein to come from supplements</strong> ' +
+                         '&mdash; AND puts it at roughly 60&ndash;75%. Liquid options are listed first because they are what you can actually take.',
+                liquidFirst: true,
+                caveat: 'Your surgical team\u2019s plan comes first. Texture stage, fluid rules and supplement brand may all be specified for you, ' +
+                        'and this list does not know your procedure or your labs.'
+            },
+            recovery: {
+                heading: 'Hitting {P} g of protein on {C} calories',
+                context: 'Between six and twelve months, tolerance broadens and roughly half your protein can come from food. ' +
+                         'Supplements still carry the rest, especially on days when solid food is difficult.',
+                liquidFirst: true,
+                caveat: 'Follow the plan from your surgical team and dietitian; this is general guidance, not your protocol.'
+            },
+            longterm: {
+                heading: 'Topping up {P} g of protein',
+                context: 'In long-term maintenance the goal is whole food first, with supplements filling gaps rather than doing the work. ' +
+                         'These are useful for travel, busy days, or when a meal falls short.',
+                liquidFirst: false,
+                caveat: 'Lifelong supplementation and annual labs are standard after bariatric surgery. Keep your follow-up appointments.'
+            },
+            none: {
+                heading: 'Hitting {P} g of protein a day',
+                context: 'Shelf-stable options, with what each one covers of <em>your</em> target.',
+                liquidFirst: false,
+                caveat: ''
+            }
+        };
+
+        function renderNutrientProducts(proteinG, targetCalories, phase) {
+            if (!proteinG || proteinG <= 0) return;
+            const cfg = NP_PHASES[phase] || NP_PHASES.none;
+
+            document.getElementById('np-heading').innerHTML =
+                cfg.heading.replace('{P}', proteinG).replace('{C}', Math.round(targetCalories).toLocaleString());
+            document.getElementById('np-context').innerHTML = cfg.context;
+
+            const items = cfg.liquidFirst
+                ? NUTRIENT_PRODUCTS.slice().sort(function (a, b) { return (b.liquid ? 1 : 0) - (a.liquid ? 1 : 0); })
+                : NUTRIENT_PRODUCTS;
+
+            document.getElementById('np-list').innerHTML = items.map(function (p) {
+                const pct = Math.round((p.g / proteinG) * 100);
+                const url = 'https://www.amazon.com/dp/' + p.asin + '?tag=m4quickquail-20';
+                return '<div class="np-row">' +
+                    '<div class="np-name">' + p.name +
+                        '<span class="np-sub">' + p.serving + ' &middot; ' + p.g + ' g protein, ~' + p.kcal + ' cal</span></div>' +
+                    '<div class="np-pct">' + pct + '% of protein</div>' +
+                    '<a class="np-buy" href="' + url + '" target="_blank" rel="sponsored nofollow noopener">View on Amazon &rarr;</a>' +
+                    '</div>';
+            }).join('');
+
+            // The point most post-op patients miss: on a small calorie budget the
+            // question is protein PER CALORIE, not protein alone.
+            const top = items[0];
+            const n = Math.max(1, Math.ceil((proteinG * 0.6) / top.g));
+            const gFrom = n * top.g, calFrom = n * top.kcal;
+            const left = Math.max(0, Math.round(targetCalories - calFrom));
+            document.getElementById('np-budget').innerHTML =
+                '<strong>' + n + '&nbsp;&times; ' + top.name + '</strong> gives you <strong>' + gFrom + '&nbsp;g protein for about ' +
+                calFrom + ' calories</strong> \u2014 ' + Math.round((gFrom / proteinG) * 100) + '% of your protein using ' +
+                Math.round((calFrom / targetCalories) * 100) + '% of your calories, leaving roughly <strong>' + left +
+                '</strong> for food. That ratio is the reason supplements matter on a small budget. ' +
+                'Full guidance in the <a href="/bariatric-nutrition.html" style="color:#667eea;font-weight:600;">bariatric nutrition guide</a>.';
+
+            const cav = document.getElementById('np-caveat');
+            if (cfg.caveat) { cav.innerHTML = '<strong>\u26a0\ufe0f</strong> ' + cfg.caveat; cav.style.display = 'block'; }
+            else { cav.style.display = 'none'; }
+
+            document.getElementById('nutrient-products').style.display = 'block';
+        }
+
         function calculateCalories() {
             console.log('Calculate button clicked');
             
@@ -1436,6 +1552,8 @@
             } else {
                 bariatricIndicator.style.display = 'none';
             }
+
+            renderNutrientProducts(proteinG, targetCalories, bariatric);
 
             // Show results panel and scroll to it
             document.getElementById('results').classList.add('show');
